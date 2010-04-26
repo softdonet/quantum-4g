@@ -17,6 +17,11 @@ public class Cromosoma {
 
     private List<Gen> genes;
 
+    public double hallaSumaFactorPonderacion(){
+        //TODO
+        return 0;
+    }
+
     public Double getGradoBondadIndividuo() {
         return gradoBondadIndividuo;
     }
