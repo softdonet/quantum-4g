@@ -6,6 +6,7 @@
 package com.quantum4g.algoritmos.grasp;
 
 import com.quantum4g.core.entidades.Cromosoma;
+import com.quantum4g.core.entidades.Gen;
 import com.quantum4g.core.entidades.Triada;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,13 @@ import java.util.List;
  */
 public class AlgoritmoGRASP {
 
-    //Número de Genes
+    //Nï¿½mero de Genes
     private Integer N;
     
     //Lista de los Factores de Bondad por Gen del universo
-    private List<Cromosoma> universo;
+    private List<Gen> listaGenes;
 
-    //Método principal de la ejecución del algoritmo
+    //Mï¿½todo principal de la ejecuciï¿½n del algoritmo
     public void ejecucionGRASP(){
 
         inicializarListaFactoresBondad();
@@ -31,35 +32,42 @@ public class AlgoritmoGRASP {
         //Cantidad candidata de iteraciones
         int cantidadIteraciones=100;
         
-        //Valor candidato del factor de relajación
+        //Valor candidato del factor de relajaciï¿½n
         double alfa=0.3;
 
-        //Declaración de Variables
+        //Declaraciï¿½n de Variables
         int indiceSuperior,indiceInferior,indiceRCL=0;
         double sumaFactorPonderacion;
+        Gen genSeleccionado;
         Cromosoma cromosoma;
+        List<Gen> listaTemporal;
+
+        ordenarListaFactoresBondad(this.listaGenes);
 
         for (int i=0;i<cantidadIteraciones;i++){
 
             sumaFactorPonderacion=0;
             cromosoma=new Cromosoma();
+            listaTemporal=new ArrayList<Gen>();
+            //Creacion de la lista de Genes que sera modificada
+            for (int j=0;j<this.listaGenes.size();j++){
+                listaTemporal.add(listaGenes.get(j));
+            }
 
             while(sumaFactorPonderacion< (this.N.intValue()/2)){
-
-                ordenarListaFactoresBondad(this.universo);
+             
                 indiceSuperior=this.N.intValue()-1;
                 indiceInferior=0;
                 indiceRCL=(int) (Math.random() * (indiceInferior + alfa * (indiceSuperior - indiceInferior)) + indiceInferior);
-                cromosoma=universo.get(indiceRCL);
-                poblacionInicial.add(cromosoma);
-                universo.remove(cromosoma);
+                genSeleccionado=listaTemporal.get(indiceRCL);
+                cromosoma.activarGen(genSeleccionado);
                 sumaFactorPonderacion+=cromosoma.hallaSumaFactorPonderacion();
-               
+                listaTemporal.remove(indiceRCL);
             }
-
             if (sumaFactorPonderacion > (this.N.intValue()/2)){
-                poblacionInicial.remove(indiceRCL);
+                cromosoma.apagarGen(indiceRCL);
             }
+            poblacionInicial.add(cromosoma);
         }
 
         eliminarRepetidos();
@@ -73,7 +81,7 @@ public class AlgoritmoGRASP {
 
     }
 
-    private void ordenarListaFactoresBondad(List<Cromosoma> universo) {
+    private void ordenarListaFactoresBondad(List<Gen> listaGenes) {
 
     }
 
