@@ -17,6 +17,8 @@ public class Gen {
 
     private Double gradoBondad;
 
+    private Triada triada;
+
     public Integer getNumeroGen() {
         return numeroGen;
     }
@@ -39,6 +41,14 @@ public class Gen {
 
     public void setGradoBondad(Double gradoBondad) {
         this.gradoBondad = gradoBondad;
+    }
+
+    public Triada getTriada() {
+        return triada;
+    }
+
+    public void setTriada(Triada triada) {
+        this.triada = triada;
     }
 
 }
