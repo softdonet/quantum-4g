@@ -18,7 +18,7 @@ public class NewMain {
      */
     public static void main(String[] args) {
         OperacionesMatrices operacion=new OperacionesMatrices(2);
-        double[][] matrizHadamard=operacion.crearTransfHadamard(new  EstadoCuantico[1], 2);
+        double[][] matrizHadamard=operacion.crearTransfHadamard(new  EstadoCuantico[1], 10);
         
         for (int i=0;i<matrizHadamard.length;i++){
             for (int j=0;j<matrizHadamard.length;j++){

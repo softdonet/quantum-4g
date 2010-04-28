@@ -48,37 +48,41 @@ public class OperacionesMatrices {
 
     public double[][] crearTransfHadamard(EstadoCuantico[] vectorEstados, int N) {
         double[][] matrizHadamard=null;
-        if (N==1){
-            matrizHadamard=this.matrizHadamardInicial;
-        }
-        else{
-            matrizHadamard=formaMatrizHadamard(crearTransfHadamard(vectorEstados,N-1),N);
-        }
+        int tamMatriz=(int) Math.pow(2,N);
+        matrizHadamard=new double[tamMatriz][tamMatriz];
+
+          for (int i=0;i<N*2;i++){
+                for (int j=0;j<N*2;j++){
+
+                    matrizHadamard[i][j]=(1/(Math.pow(2,N/2)))*Math.pow(-1,productoPuntoBinario(i,j));
+                }
+          }
+
         return matrizHadamard;
     }
 
-    private double[][] formaMatrizHadamard(double[][] matrizHadamardAnterior, int N) {
-        
-        double[][] matrizHadamardActual= new double[N*2][N*2];
-
-        for (int i=0;i<N*2;i++){
-                for (int j=0;j<N*2;j++){
-                    if (i<N && j<N){
-                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i][j]*INVERSA_RAIZ;
-                    }
-                    if (i>=N && j<N){
-                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i-N][j]*INVERSA_RAIZ;
-                    }
-                    if (i<N && j>=N){
-                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i][j-N]*INVERSA_RAIZ;
-                    }
-                    if (i>=N && j>=N){
-                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i-N][j-N]*INVERSA_RAIZ*(-1);
-                    }
-                }
-        }
-        return matrizHadamardActual;
-    }
+//    private double[][] formaMatrizHadamard(double[][] matrizHadamardAnterior, int N) {
+//
+//        double[][] matrizHadamardActual= new double[N*2][N*2];
+//
+//        for (int i=0;i<N*2;i++){
+//                for (int j=0;j<N*2;j++){
+//                    if (i<N && j<N){
+//                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i][j]*INVERSA_RAIZ;
+//                    }
+//                    if (i>=N && j<N){
+//                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i-N][j]*INVERSA_RAIZ;
+//                    }
+//                    if (i<N && j>=N){
+//                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i][j-N]*INVERSA_RAIZ;
+//                    }
+//                    if (i>=N && j>=N){
+//                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i-N][j-N]*INVERSA_RAIZ*(-1);
+//                    }
+//                }
+//        }
+//        return matrizHadamardActual;
+//    }
 
     public EstadoCuantico[] productoMatrizVector(EstadoCuantico[][] matrizGrover, EstadoCuantico[] estadosBaseOraculo) {
         return null;
@@ -106,6 +110,14 @@ public class OperacionesMatrices {
 
     public void setMatrizIdentidad(int[][] matrizIdentidad) {
         this.matrizIdentidad = matrizIdentidad;
+    }
+
+    private int productoPuntoBinario(int i, int j) {
+        int suma=0;
+        for (int k=0;k<N;k++){
+            suma+= (i & (int)(Math.pow(2,k)))*(j* (int) Math.pow(2,k));
+        }
+        return suma;
     }
 
 }
