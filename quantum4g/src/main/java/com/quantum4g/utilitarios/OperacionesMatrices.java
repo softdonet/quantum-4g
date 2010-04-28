@@ -13,23 +13,71 @@ import com.quantum4g.core.entidades.EstadoCuantico;
  */
 public class OperacionesMatrices {
 
+    private int N;
+
+    private int totalElementos;
+    
     private int[][] matrizIdentidad;
 
-    private EstadoCuantico[][] matrizHadamardInicial;
+    private double[][] matrizHadamardInicial;
 
-    public OperacionesMatrices(){
-        
+    private final double INVERSA_RAIZ=(1/Math.sqrt(2));
+
+    public OperacionesMatrices(int N){
+        this.N=N;
+        this.totalElementos=(int) Math.pow(2, N);
+        this.matrizIdentidad=new int[totalElementos][totalElementos];
+
+        for (int i=0;i<this.totalElementos;i++){
+            for (int j=0;j<this.totalElementos;j++){
+                if (i==j){
+                    this.matrizIdentidad[i][j]=1;
+                }
+                else{
+                    this.matrizIdentidad[i][j]=0;
+                }
+            }
+        }
+
+        this.matrizHadamardInicial=new double[2][2];
+        this.matrizHadamardInicial[0][0]=INVERSA_RAIZ;
+        this.matrizHadamardInicial[0][1]=INVERSA_RAIZ;
+        this.matrizHadamardInicial[1][0]=INVERSA_RAIZ;
+        this.matrizHadamardInicial[1][1]=INVERSA_RAIZ*(-1);
     }
 
-    public EstadoCuantico[][] crearTransfHadamard(EstadoCuantico[] vectorEstados, int N) {
-        EstadoCuantico[][] matrizHadamard=null;
-        if (N==0){
+    public double[][] crearTransfHadamard(EstadoCuantico[] vectorEstados, int N) {
+        double[][] matrizHadamard=null;
+        if (N==1){
             matrizHadamard=this.matrizHadamardInicial;
         }
         else{
-            matrizHadamard=formaMatrizHadamard(crearTransfHadamard(vectorEstados,N),N-1);
+            matrizHadamard=formaMatrizHadamard(crearTransfHadamard(vectorEstados,N-1),N);
         }
         return matrizHadamard;
+    }
+
+    private double[][] formaMatrizHadamard(double[][] matrizHadamardAnterior, int N) {
+        
+        double[][] matrizHadamardActual= new double[N*2][N*2];
+
+        for (int i=0;i<N*2;i++){
+                for (int j=0;j<N*2;j++){
+                    if (i<N && j<N){
+                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i][j]*INVERSA_RAIZ;
+                    }
+                    if (i>=N && j<N){
+                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i-N][j]*INVERSA_RAIZ;
+                    }
+                    if (i<N && j>=N){
+                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i][j-N]*INVERSA_RAIZ;
+                    }
+                    if (i>=N && j>=N){
+                        matrizHadamardActual[i][j]=matrizHadamardAnterior[i-N][j-N]*INVERSA_RAIZ*(-1);
+                    }
+                }
+        }
+        return matrizHadamardActual;
     }
 
     public EstadoCuantico[] productoMatrizVector(EstadoCuantico[][] matrizGrover, EstadoCuantico[] estadosBaseOraculo) {
@@ -58,10 +106,6 @@ public class OperacionesMatrices {
 
     public void setMatrizIdentidad(int[][] matrizIdentidad) {
         this.matrizIdentidad = matrizIdentidad;
-    }
-
-    private EstadoCuantico[][] formaMatrizHadamard(EstadoCuantico[][] crearTransfHadamard, int i) {
-        return null;
     }
 
 }

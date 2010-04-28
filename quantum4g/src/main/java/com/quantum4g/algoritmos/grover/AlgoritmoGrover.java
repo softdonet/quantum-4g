@@ -31,11 +31,10 @@ public class AlgoritmoGrover {
         this.totalElementos= (int)(Math.pow(2, N-1));
         this.vectorEstados=new EstadoCuantico[totalElementos];
         this.matrizGrover=new EstadoCuantico[totalElementos][totalElementos];
-        this.operacionesMatrices=new OperacionesMatrices();
+        this.operacionesMatrices=new OperacionesMatrices(N);
     }
 
     public void ejecucionGrover(){
-
 
         EstadoCuantico[] estadosBaseOraculo;
 
@@ -67,9 +66,14 @@ public class AlgoritmoGrover {
 
     }
 
+    private EstadoCuantico[][] adaptaMatriz(double[][] matrizHadamard) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     private void inicializarEstadosBase(EstadoCuantico[] vectorEstados,int N) {
-        EstadoCuantico[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(vectorEstados,N);
-        vectorEstados= getOperacionesMatrices().productoMatrizVector(matrizHadamard, vectorEstados);
+        double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(vectorEstados,N);
+        EstadoCuantico[][] matrizHadamardEstados=adaptaMatriz(matrizHadamard);
+        vectorEstados= getOperacionesMatrices().productoMatrizVector(matrizHadamardEstados, vectorEstados);
     }
 
     private void inicializarOperadorGrover(EstadoCuantico[][] matrizGrover, EstadoCuantico[] vectorEstados) {
