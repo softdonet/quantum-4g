@@ -115,7 +115,7 @@ public class OperacionesMatrices {
     private int productoPuntoBinario(int i, int j) {
         int suma=0;
         for (int k=0;k<N;k++){
-            suma+= (i & (int)(Math.pow(2,k)))*(j* (int) Math.pow(2,k));
+            suma+= ((i & (int)(Math.pow(2,k)))>>k)*((j & (int) Math.pow(2,k))>>k);
         }
         return suma;
     }
