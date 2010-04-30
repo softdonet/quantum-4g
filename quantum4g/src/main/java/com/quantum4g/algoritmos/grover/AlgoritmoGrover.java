@@ -71,7 +71,7 @@ public class AlgoritmoGrover {
     }
 
     private void inicializarEstadosBase(EstadoCuantico[] vectorEstados,int N) {
-        double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(vectorEstados,N);
+        double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(N);
         EstadoCuantico[][] matrizHadamardEstados=adaptaMatriz(matrizHadamard);
         vectorEstados= getOperacionesMatrices().productoMatrizVector(matrizHadamardEstados, vectorEstados);
     }
