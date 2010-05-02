@@ -60,34 +60,76 @@ public class OperacionesMatrices {
         return suma;
     }
 
-    public EstadoCuantico[] productoMatrizVector(EstadoCuantico[][] matriz, EstadoCuantico[] vector) {
+    public void productoMatrizVector(EstadoCuantico[][] matriz, EstadoCuantico[] vector) {
+
         int tamVector=vector.length;
-        //EstadoCuantico[] resultadoProducto=new EstadoCuantico[tamVector];
+        double[] listaValoresParciales= new double[tamVector];
         double valorParcial;
         for (int i=0;i<tamVector;i++){
             valorParcial=0;
             for (int j=0;j<tamVector;j++){
                 valorParcial+=matriz[i][j].getValorMatriz()*vector[j].getValorMatriz();
             }
+            listaValoresParciales[i]=valorParcial;
         }
 
-        return null;
+        for (int i=0;i<vector.length;i++){
+            vector[i].setValorMatriz(listaValoresParciales[i]);
+            vector[i].setAmplitudProbabilidad(vector[i].getValorMatriz());
+        }
     }
 
-    public EstadoCuantico[] hallaConjugado(EstadoCuantico[] vectorEstados) {
-        return null;
+    public EstadoCuantico[] hallaDual(EstadoCuantico[] vectorEstados) {
+        EstadoCuantico[] resultadoDual=new EstadoCuantico[vectorEstados.length];
+        for (int i=0;i<vectorEstados.length;i++){
+            resultadoDual[i]=new EstadoCuantico();
+            //TODO, hallar el complejo conjugado
+            resultadoDual[i]=vectorEstados[i];
+        }
+        return resultadoDual;
     }
 
-    public EstadoCuantico[] productoVectorial(EstadoCuantico[] vectorEstados, EstadoCuantico[] estadoBaseConjugado) {
-        return null;
+    public EstadoCuantico[][] productoVectorial(EstadoCuantico[] vector1, EstadoCuantico[] vector2) {
+        EstadoCuantico[][] producto;
+        //Vector1 equivale al KET y Vector2 al BRA
+        if (vector1.length==vector2.length){
+            producto=new EstadoCuantico[vector1.length][vector2.length];
+            for (int i=0;i<vector1.length;i++){
+                for(int j=0;j<vector2.length;j++){
+                    producto[i][j].setAmplitudProbabilidad(vector1[i].getAmplitudProbabilidad()*vector2[j].getAmplitudProbabilidad());
+                    producto[i][j].setValorMatriz(vector1[i].getValorMatriz()*vector2[j].getValorMatriz());
+                }
+            }
+            
+        }
+        else{
+            throw new UnsupportedOperationException("Operacion no Permitida");
+        }       
+        return producto;
     }
 
-    public EstadoCuantico[][] producto(int i, EstadoCuantico[] vectorProducto) {
-        return null;
+    public void productoConEscalar(int i, EstadoCuantico[][] vectorProducto) {
+        for (int j=0;j<vectorProducto.length;j++){
+            for (int k=0;k<vectorProducto.length;k++){
+                vectorProducto[j][k].setAmplitudProbabilidad(vectorProducto[j][k].getAmplitudProbabilidad()*i);
+                vectorProducto[j][k].setValorMatriz(vectorProducto[j][k].getValorMatriz()*i);
+            }
+        }
     }
 
-    public EstadoCuantico[][] sumar(EstadoCuantico[][] estadoCuantico, int[][] matrizIdentidad) {
-        return null;
+    public EstadoCuantico[][] restar(EstadoCuantico[][] matriz1, int[][] matriz2) {
+
+         int tamVector=matriz1.length;
+         EstadoCuantico[][] resta = new EstadoCuantico[matriz1.length][matriz1[0].length];
+         
+         for (int i=0;i<tamVector;i++){
+            for (int j=0;j<tamVector;j++){
+                resta[i][j]=new EstadoCuantico();
+                resta[i][j].setAmplitudProbabilidad(matriz1[i][j].getAmplitudProbabilidad()-matriz2[i][j]);
+                resta[i][j].setValorMatriz(resta[i][j].getAmplitudProbabilidad());
+            }
+        }
+       return resta;
     }
 
     public int[][] getMatrizIdentidad() {
@@ -97,4 +139,5 @@ public class OperacionesMatrices {
     public void setMatrizIdentidad(int[][] matrizIdentidad) {
         this.matrizIdentidad = matrizIdentidad;
     }
+
 }

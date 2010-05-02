@@ -18,25 +18,22 @@ public class AlgoritmoGrover {
     private int N;
 
     //Vector de Estados
-    private EstadoCuantico[] vectorEstados;
+    //private EstadoCuantico[] vectorEstados;
 
     private int totalElementos;
 
     private OperacionesMatrices operacionesMatrices;
 
-    EstadoCuantico[][] matrizGrover;
-
     public AlgoritmoGrover(int N){
         this.N=N;
         this.totalElementos= (int)(Math.pow(2, N-1));
-        this.vectorEstados=new EstadoCuantico[totalElementos];
-        this.matrizGrover=new EstadoCuantico[totalElementos][totalElementos];
         this.operacionesMatrices=new OperacionesMatrices(N);
     }
 
     public void ejecucionGrover(){
 
-        EstadoCuantico[] estadosBaseOraculo;
+        EstadoCuantico[] vectorEstados=null;
+        EstadoCuantico[][] matrizGrover;
 
         //Valor tentativo inicial y aleatorio
         int m = (int) (Math.random()*totalElementos);
@@ -47,44 +44,57 @@ public class AlgoritmoGrover {
         for (int i=0;i<cantidadIteraciones;i++){
 
             inicializarEstadosBase(vectorEstados,N);
-
-            inicializarOperadorGrover(matrizGrover,vectorEstados);
-
+            matrizGrover=inicializarOperadorGrover(vectorEstados);
             for (int j=0;j<cantidadIteraciones;j++){
-
-                estadosBaseOraculo= aplicarOraculo(vectorEstados);
-
-                vectorEstados= getOperacionesMatrices().productoMatrizVector(matrizGrover,estadosBaseOraculo);
-
+                m=aplicarOraculo(vectorEstados,m);
+                getOperacionesMatrices().productoMatrizVector(matrizGrover,vectorEstados);
             }
-
             indiceResultado=simularMedicion(vectorEstados,N);
-
         }
-
         System.out.println("La solucion esta en "+ indiceResultado);
-
     }
 
     private EstadoCuantico[][] adaptaMatriz(double[][] matrizHadamard) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     private void inicializarEstadosBase(EstadoCuantico[] vectorEstados,int N) {
-        double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(N);
+        vectorEstados=new EstadoCuantico[totalElementos];
+        double probabilidad=1/Math.sqrt(totalElementos);
+        //TODO: Inicializar con la informacion de valor de fitness
+        for (int i=0;i<totalElementos;i++){
+            vectorEstados[i]=new EstadoCuantico();
+            vectorEstados[i].setNumeroEstado(i);
+            vectorEstados[i].setValorMatriz(probabilidad);
+            vectorEstados[i].setAmplitudProbabilidad(probabilidad);
+        }
+        /*double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(N);
         EstadoCuantico[][] matrizHadamardEstados=adaptaMatriz(matrizHadamard);
         vectorEstados= getOperacionesMatrices().productoMatrizVector(matrizHadamardEstados, vectorEstados);
+         * */
     }
 
-    private void inicializarOperadorGrover(EstadoCuantico[][] matrizGrover, EstadoCuantico[] vectorEstados) {
-        EstadoCuantico[] estadoBaseConjugado= getOperacionesMatrices().hallaConjugado(vectorEstados);
-        EstadoCuantico[] vectorProducto=getOperacionesMatrices().productoVectorial(vectorEstados,estadoBaseConjugado);
-        EstadoCuantico[][] productoInicial=getOperacionesMatrices().producto(2,vectorProducto);
-        matrizGrover= getOperacionesMatrices().sumar(productoInicial,getOperacionesMatrices().getMatrizIdentidad());
+    private EstadoCuantico[][] inicializarOperadorGrover(EstadoCuantico[] vectorEstados) {
+        EstadoCuantico[] estadoBaseConjugado= getOperacionesMatrices().hallaDual(vectorEstados);
+        EstadoCuantico[][] matrizProducto=getOperacionesMatrices().productoVectorial(vectorEstados,estadoBaseConjugado);
+        getOperacionesMatrices().productoConEscalar(2,matrizProducto);
+        return getOperacionesMatrices().restar(matrizProducto,getOperacionesMatrices().getMatrizIdentidad());
     }
 
-    private EstadoCuantico[] aplicarOraculo(EstadoCuantico[] vectorEstados) {
-        return null;
+    private int aplicarOraculo(EstadoCuantico[] vectorEstados, int indice) {
+        int indiceOraculo=(int) (Math.random() * this.totalElementos);
+        while(true){
+            if (indiceOraculo!=indice &&
+                vectorEstados[indiceOraculo].getValorFitness()>vectorEstados[indice].getValorFitness()) {
+                break;
+            }
+            else{
+                indiceOraculo=(int) (Math.random() * this.totalElementos);
+            }
+        }
+        vectorEstados[indiceOraculo].setAmplitudProbabilidad(vectorEstados[indiceOraculo].getAmplitudProbabilidad()*-1);
+        vectorEstados[indiceOraculo].setValorMatriz(vectorEstados[indiceOraculo].getValorMatriz()*-1);
+        return indiceOraculo;
     }
 
     private int simularMedicion(EstadoCuantico[] vectorEstados, int N) {
