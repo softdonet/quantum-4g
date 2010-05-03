@@ -7,7 +7,7 @@ package com.quantum4g.algoritmos.grover;
 
 import com.quantum4g.core.entidades.EstadoCuantico;
 import com.quantum4g.utilitarios.OperacionesMatrices;
-
+import com.quantum4g.core.entidades.Cromosoma;
 /**
  *
  * @author Pepe
@@ -23,17 +23,20 @@ public class AlgoritmoGrover {
     private int totalElementos;
 
     private OperacionesMatrices operacionesMatrices;
+    
+    private Cromosoma[] universo;
 
-    public AlgoritmoGrover(int N){
+    public AlgoritmoGrover(int N,Cromosoma[] universo){
         this.N=N;
         this.totalElementos= (int)(Math.pow(2, N-1));
         this.operacionesMatrices=new OperacionesMatrices(N);
+        this.universo=universo;
     }
 
     public void ejecucionGrover(){
 
-        EstadoCuantico[] vectorEstados=null;
-        EstadoCuantico[][] matrizGrover;
+        EstadoCuantico[] vectorEstados=new EstadoCuantico[totalElementos];
+        EstadoCuantico[][] matrizGrover=null;
 
         //Valor tentativo inicial y aleatorio
         int m = (int) (Math.random()*totalElementos);
@@ -42,8 +45,8 @@ public class AlgoritmoGrover {
 
         //Bucle dentro del cual se ejecutara Grover
         for (int i=0;i<cantidadIteraciones;i++){
-
             inicializarEstadosBase(vectorEstados,N);
+            //if (true) return;
             matrizGrover=inicializarOperadorGrover(vectorEstados);
             for (int j=0;j<cantidadIteraciones;j++){
                 m=aplicarOraculo(vectorEstados,m);
@@ -59,7 +62,6 @@ public class AlgoritmoGrover {
     }
 
     private void inicializarEstadosBase(EstadoCuantico[] vectorEstados,int N) {
-        vectorEstados=new EstadoCuantico[totalElementos];
         double probabilidad=1/Math.sqrt(totalElementos);
         //TODO: Inicializar con la informacion de valor de fitness
         for (int i=0;i<totalElementos;i++){
@@ -67,6 +69,7 @@ public class AlgoritmoGrover {
             vectorEstados[i].setNumeroEstado(i);
             vectorEstados[i].setValorMatriz(probabilidad);
             vectorEstados[i].setAmplitudProbabilidad(probabilidad);
+            vectorEstados[i].setValorFitness(universo[i].getGradoBondadIndividuo());   
         }
         /*double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(N);
         EstadoCuantico[][] matrizHadamardEstados=adaptaMatriz(matrizHadamard);
@@ -83,14 +86,17 @@ public class AlgoritmoGrover {
 
     private int aplicarOraculo(EstadoCuantico[] vectorEstados, int indice) {
         int indiceOraculo=(int) (Math.random() * this.totalElementos);
+        int contador=0;
         while(true){
             if (indiceOraculo!=indice &&
                 vectorEstados[indiceOraculo].getValorFitness()>vectorEstados[indice].getValorFitness()) {
                 break;
             }
             else{
+                if (contador>50) break;
                 indiceOraculo=(int) (Math.random() * this.totalElementos);
             }
+            contador++;
         }
         vectorEstados[indiceOraculo].setAmplitudProbabilidad(vectorEstados[indiceOraculo].getAmplitudProbabilidad()*-1);
         vectorEstados[indiceOraculo].setValorMatriz(vectorEstados[indiceOraculo].getValorMatriz()*-1);

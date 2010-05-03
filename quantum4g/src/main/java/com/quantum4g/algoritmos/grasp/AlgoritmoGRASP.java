@@ -47,7 +47,7 @@ public class AlgoritmoGRASP {
         for (int i=0;i<cantidadIteraciones;i++){
 
             sumaFactorPonderacion=0;
-            cromosoma=new Cromosoma();
+            cromosoma=new Cromosoma(N);
             listaTemporal=new ArrayList<Gen>();
             //Creacion de la lista de Genes que sera modificada
             for (int j=0;j<this.listaGenes.size();j++){

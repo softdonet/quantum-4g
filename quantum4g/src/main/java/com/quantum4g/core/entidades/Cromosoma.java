@@ -18,16 +18,22 @@ public class Cromosoma {
 
     //Cantidad de Genes
     private Integer N;
-
     private List<Gen> genes;
 
-    public Cromosoma(){
-        this.genes=new ArrayList<Gen>();
+    public Cromosoma(int N){
+        this.N=N;
+        this.genes=new ArrayList<Gen>(N);
     }
 
     public double hallaSumaFactorPonderacion(){
-        //TODO
-        return 0;
+        double suma=0;
+        for (int i=0;i<genes.size();i++){
+            if (genes.get(i).getValor()){
+                suma+=genes.get(i).getGradoBondad();
+            }
+        }
+        this.setGradoBondadIndividuo(suma);
+        return suma;
     }
 
     public void activarGen(Gen genSeleccionado){
