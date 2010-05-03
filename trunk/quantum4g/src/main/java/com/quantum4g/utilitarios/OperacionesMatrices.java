@@ -15,10 +15,8 @@ public class OperacionesMatrices {
 
     private int N;
 
-    private int totalElementos;
-    
+    private int totalElementos;    
     private int[][] matrizIdentidad;
-
     private final double INVERSA_RAIZ=(1/Math.sqrt(2));
 
     public OperacionesMatrices(int N){
@@ -96,6 +94,7 @@ public class OperacionesMatrices {
             producto=new EstadoCuantico[vector1.length][vector2.length];
             for (int i=0;i<vector1.length;i++){
                 for(int j=0;j<vector2.length;j++){
+                    producto[i][j]=new EstadoCuantico();
                     producto[i][j].setAmplitudProbabilidad(vector1[i].getAmplitudProbabilidad()*vector2[j].getAmplitudProbabilidad());
                     producto[i][j].setValorMatriz(vector1[i].getValorMatriz()*vector2[j].getValorMatriz());
                 }
