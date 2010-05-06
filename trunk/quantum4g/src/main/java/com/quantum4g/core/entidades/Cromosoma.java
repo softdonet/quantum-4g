@@ -25,7 +25,16 @@ public class Cromosoma {
         this.genes=new ArrayList<Gen>(N);
     }
 
-    public double hallaSumaFactorPonderacion(){
+    public void inicializarGenes(){
+        for (int i=0;i<N;i++){
+           Gen gen=new Gen();
+           gen.setNumeroGen(i);
+           this.genes.add(gen);
+        }
+    }
+
+
+    public double hallaFactorBondadIndividuo(){
         double suma=0;
         for (int i=0;i<genes.size();i++){
             if (genes.get(i).getValor()){
@@ -35,6 +44,17 @@ public class Cromosoma {
         this.setGradoBondadIndividuo(suma);
         return suma;
     }
+
+    public double hallaSumaFactorPonderacion(){
+        double suma=0;
+        for (int i=0;i<genes.size();i++){
+            if (genes.get(i).getValor()){
+                suma+=genes.get(i).getTriada().getFactorPonderacion();
+            }
+        }
+        return suma;
+    }
+
 
     public void activarGen(Gen genSeleccionado){
         if (!existeGen(genSeleccionado)){
@@ -67,8 +87,13 @@ public class Cromosoma {
         this.genes = genes;
     }
 
-    public void apagarGen(int indiceRCL) {
-        this.genes.remove(indiceRCL);
+
+    public void activarGen(Integer numeroGen,boolean valor) {
+        for (Gen gen:this.genes){
+            if (gen.getNumeroGen().equals(numeroGen)){
+                gen.setValor(valor);
+            }
+        }
     }
 
 
