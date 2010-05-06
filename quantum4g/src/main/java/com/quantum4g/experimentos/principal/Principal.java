@@ -23,12 +23,8 @@ public class Principal {
         this.totalElementos=(int) Math.pow(2,N);
     }
 
-    public Cromosoma[] inicializaUniverso(){
-        Cromosoma[] universo= new Cromosoma[totalElementos];
-        int valorEntero;
-        boolean valorLogico;
-        Gen gen=null;
 
+    public Triada[] generaValoresTriadaGen(int N){
         Triada[] triada=new Triada[N];
         for (int l=0;l<N;l++){
             triada[l]=new Triada();
@@ -36,6 +32,17 @@ public class Principal {
             triada[l].setFactorNegativo(Math.random()*100*-1);
             triada[l].setFactorPonderacion(Math.random());
         }
+        return triada;
+    }
+
+
+    public Cromosoma[] inicializaUniverso(){
+        Cromosoma[] universo= new Cromosoma[totalElementos];
+        int valorEntero;
+        boolean valorLogico;
+        Gen gen=null;
+
+        Triada[] triada=generaValoresTriadaGen(N);
 
         for (int i=0;i<totalElementos;i++){
             universo[i]=new Cromosoma(N);            
@@ -52,7 +59,7 @@ public class Principal {
                 gen.setGradoBondad((triada[j].getFactorPositivo()+triada[j].getFactorNegativo())*triada[j].getFactorPonderacion());
                 universo[i].getGenes().add(gen);
             }
-            universo[i].hallaSumaFactorPonderacion();
+            universo[i].hallaFactorBondadIndividuo();
         }
         return universo;
     }
