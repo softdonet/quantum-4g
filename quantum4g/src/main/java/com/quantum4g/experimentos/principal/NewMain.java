@@ -5,6 +5,7 @@
 
 package com.quantum4g.experimentos.principal;
 
+import com.quantum4g.algoritmos.grasp.AlgoritmoGRASP;
 import com.quantum4g.algoritmos.grover.AlgoritmoGrover;
 import com.quantum4g.utilitarios.OperacionesMatrices;
 import com.quantum4g.core.entidades.EstadoCuantico;
@@ -22,7 +23,9 @@ public class NewMain {
           Principal principal=new Principal(10);
           AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(10, principal.inicializaUniverso());
           algoritmoGrover.ejecucionGrover();
-//        OperacionesMatrices operacion=new OperacionesMatrices(2);
+          AlgoritmoGRASP algoritmoGRASP=new AlgoritmoGRASP(10, principal.generaValoresTriadaGen(10));
+          algoritmoGRASP.ejecucionGRASP();
+          //        OperacionesMatrices operacion=new OperacionesMatrices(2);
 //        double[][] matrizHadamard=operacion.crearTransfHadamard( 2);
 //
 //        for (int i=0;i<matrizHadamard.length;i++){

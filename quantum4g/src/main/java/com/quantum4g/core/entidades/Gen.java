@@ -18,7 +18,7 @@ public class Gen {
     private Double gradoBondad;
 
     private Triada triada;
-
+    
     public Integer getNumeroGen() {
         return numeroGen;
     }
