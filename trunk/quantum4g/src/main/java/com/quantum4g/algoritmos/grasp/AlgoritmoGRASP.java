@@ -72,7 +72,7 @@ public class AlgoritmoGRASP {
                 listaTemporal.add(listaGenes.get(j));
             }
             //IMPORTANTE, cambiado de N/2 a N/4
-            while(sumaFactorPonderacion< (this.N/2) && listaTemporal.size()>0){
+            while(sumaFactorPonderacion< (this.N*2/5) && listaTemporal.size()>0){
 
                 System.out.println("Iteracion secundaria de "+ i );
                 indiceSuperior=listaTemporal.size()-1;
@@ -81,11 +81,11 @@ public class AlgoritmoGRASP {
                 genSeleccionado=listaTemporal.get(indiceRCL);
                 System.out.println("Antes de activacion de Gen");
                 cromosoma.activarGen(genSeleccionado.getNumeroGen(),true);
-                sumaFactorPonderacion+=this.listaTriada[indiceRCL].getFactorPonderacion();
+                sumaFactorPonderacion+=genSeleccionado.getTriada().getFactorPonderacion();
                 System.out.println("Antes de eliminar el gen del indice seleccionado");
                 listaTemporal.remove(indiceRCL);
             }
-            if (sumaFactorPonderacion > (this.N/2)){
+            if (sumaFactorPonderacion > (this.N*2/5)){
                 cromosoma.activarGen(indiceRCL,false);
             }
             System.out.println("Despues de añadir el "+ i+ "-esimo cromosoma");
@@ -113,7 +113,7 @@ public class AlgoritmoGRASP {
         Gen temporal;
         for (int i=0;i<listaGenes.size();i++){
                 for (int j=0;j<listaGenes.size();j++){
-                   if (listaGenes.get(j).getGradoBondad()>listaGenes.get(i).getGradoBondad()){
+                   if (listaGenes.get(j).getGradoBondad()<listaGenes.get(i).getGradoBondad()){
                       temporal=listaGenes.get(i);
                       listaGenes.set(i, listaGenes.get(j));
                       listaGenes.set(j, temporal);
@@ -138,14 +138,20 @@ public class AlgoritmoGRASP {
     private List<Cromosoma> eliminarRepetidos(List<Cromosoma> poblacionInicial) {
         int tamInicial=poblacionInicial.size();
         List<Cromosoma> poblacionFinal=new ArrayList<Cromosoma>();
-        for (int i=0;i<tamInicial;i++){
+        for (Cromosoma cromosomaI:poblacionInicial){
             boolean seRepite=false;
-            for (int j=0;j<tamInicial;j++){
-                if (i!=j && poblacionInicial.get(i).equals(poblacionInicial.get(j))){
+            for (Cromosoma cromosomaF:poblacionFinal){
+                int contador=0;
+                for (int k=0;k<this.N;k++){
+                    if (cromosomaI.getGenes().get(k).getValor().equals(cromosomaF.getGenes().get(k).getValor())){
+                        contador++;
+                    }
+                }
+                if (contador==N){
                     seRepite=true;
                 }
             }
-            if (!seRepite) poblacionFinal.add(poblacionInicial.get(i));
+            if (!seRepite) poblacionFinal.add(cromosomaI);
         }
         return poblacionFinal;
     }
