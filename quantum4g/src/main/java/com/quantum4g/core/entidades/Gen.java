@@ -18,6 +18,10 @@ public class Gen {
     private Double gradoBondad;
 
     private Triada triada;
+
+    public Gen(){
+        this.valor=new Boolean(false);
+    }
     
     public Integer getNumeroGen() {
         return numeroGen;
