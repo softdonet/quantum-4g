@@ -8,11 +8,11 @@ public class App
 {
     public static void main(String[] args) {
 
-          Principal principal=new Principal(10);
-          AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(10, principal.inicializaUniverso());
+          Principal principal=new Principal(12);
+          AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(12, principal.inicializaUniverso());
           algoritmoGrover.ejecucionGrover();
 
-          AlgoritmoGRASP algoritmoGRASP=new AlgoritmoGRASP(10, principal.generaValoresTriadaGen(10));
+          AlgoritmoGRASP algoritmoGRASP=new AlgoritmoGRASP(12, principal.generaValoresTriadaGen(12));
           algoritmoGRASP.ejecucionGRASP();
           //        OperacionesMatrices operacion=new OperacionesMatrices(2);
 //        double[][] matrizHadamard=operacion.crearTransfHadamard( 2);

@@ -15,7 +15,8 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <profiles>
+  
+<profiles>
         <profile>
             <id>netbeans-public</id>
             <activation>
@@ -33,14 +34,15 @@
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                     <classpathPrefix>lib</classpathPrefix>
-                                    <mainClass>NewMain</mainClass>
+                                    <mainClass>App</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
                     </plugin>
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
+                        <version>2.1</version>
+                           <executions>
                             <execution>
                                 <id>nb</id>
                                 <phase>package</phase>
