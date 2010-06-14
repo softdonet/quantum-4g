@@ -2,17 +2,19 @@ package com.quantum4g;
 
 import com.quantum4g.algoritmos.grasp.AlgoritmoGRASP;
 import com.quantum4g.algoritmos.grover.AlgoritmoGrover;
+import com.quantum4g.core.entidades.Triada;
 import com.quantum4g.experimentos.principal.Principal;
 
 public class App 
 {
     public static void main(String[] args) {
 
-          Principal principal=new Principal(12);
-          AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(12, principal.inicializaUniverso());
+          Principal principal=new Principal(10);
+          Triada[] triadaExperimento= principal.generaValoresTriadaGen(10);
+          AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(10, principal.inicializaUniverso(triadaExperimento));
           algoritmoGrover.ejecucionGrover();
 
-          AlgoritmoGRASP algoritmoGRASP=new AlgoritmoGRASP(12, principal.generaValoresTriadaGen(12));
+          AlgoritmoGRASP algoritmoGRASP=new AlgoritmoGRASP(10, triadaExperimento);
           algoritmoGRASP.ejecucionGRASP();
           //        OperacionesMatrices operacion=new OperacionesMatrices(2);
 //        double[][] matrizHadamard=operacion.crearTransfHadamard( 2);

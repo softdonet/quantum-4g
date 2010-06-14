@@ -23,6 +23,8 @@ public class EstadoCuantico {
 
     private Double valorMatriz;
 
+    private double sumaFactorPonderacion;
+
     public Integer getNumeroEstado() {
         return numeroEstado;
     }
@@ -69,6 +71,14 @@ public class EstadoCuantico {
 
     public void setValorMatriz(Double valorMatriz) {
         this.valorMatriz = valorMatriz;
+    }
+
+    public double getSumaFactorPonderacion() {
+        return sumaFactorPonderacion;
+    }
+
+    public void setSumaFactorPonderacion(double sumaFactorPonderacion) {
+        this.sumaFactorPonderacion = sumaFactorPonderacion;
     }
 
 }

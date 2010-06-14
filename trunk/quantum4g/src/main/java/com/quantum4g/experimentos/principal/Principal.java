@@ -36,16 +36,15 @@ public class Principal {
     }
 
 
-    public Cromosoma[] inicializaUniverso(){
+    public Cromosoma[] inicializaUniverso(Triada[] triada){
         Cromosoma[] universo= new Cromosoma[totalElementos];
         int valorEntero;
         boolean valorLogico;
         Gen gen=null;
 
-        Triada[] triada=generaValoresTriadaGen(N);
-
         for (int i=0;i<totalElementos;i++){
-            universo[i]=new Cromosoma(N);            
+            universo[i]=new Cromosoma(N);
+            double sumaFactorPonderacion=0;
             for (int j=0;j<N;j++){
                 gen=new Gen();
                 valorEntero=(i & (int)(Math.pow(2,j)))>>j;
@@ -58,7 +57,9 @@ public class Principal {
                 gen.setValor(valorLogico);
                 gen.setGradoBondad((triada[j].getFactorPositivo()+triada[j].getFactorNegativo())*triada[j].getFactorPonderacion());
                 universo[i].getGenes().add(gen);
+                sumaFactorPonderacion+=triada[j].getFactorPonderacion();
             }
+            universo[i].setSumaFactorPonderacion(sumaFactorPonderacion);
             universo[i].hallaFactorBondadIndividuo();
         }
         return universo;
