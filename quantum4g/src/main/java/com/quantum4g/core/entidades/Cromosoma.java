@@ -15,6 +15,7 @@ import java.util.List;
 public class Cromosoma {
 
     private Double gradoBondadIndividuo;
+    private double sumaFactorPonderacion;
 
     //Cantidad de Genes
     private Integer N;
@@ -94,6 +95,14 @@ public class Cromosoma {
                 gen.setValor(valor);
             }
         }
+    }
+
+    public double getSumaFactorPonderacion() {
+        return sumaFactorPonderacion;
+    }
+
+    public void setSumaFactorPonderacion(double sumaFactorPonderacion) {
+        this.sumaFactorPonderacion = sumaFactorPonderacion;
     }
 
 

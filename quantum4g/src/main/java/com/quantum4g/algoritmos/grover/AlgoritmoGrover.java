@@ -28,7 +28,7 @@ public class AlgoritmoGrover {
 
     public AlgoritmoGrover(int N,Cromosoma[] universo){
         this.N=N;
-        this.totalElementos= (int)(Math.pow(2, N-1));
+        this.totalElementos= (int)(Math.pow(2, N));
         this.operacionesMatrices=new OperacionesMatrices(N);
         this.universo=universo;
     }
@@ -54,7 +54,8 @@ public class AlgoritmoGrover {
             }
             indiceResultado=simularMedicion(vectorEstados,N);
         }
-        System.out.println("La solucion esta en "+ indiceResultado);
+        System.out.println("La solucion esta en "+ indiceResultado + " con valor de fitness total:" +
+                universo[indiceResultado].getGradoBondadIndividuo());
     }
 
     private EstadoCuantico[][] adaptaMatriz(double[][] matrizHadamard) {
@@ -69,7 +70,8 @@ public class AlgoritmoGrover {
             vectorEstados[i].setNumeroEstado(i);
             vectorEstados[i].setValorMatriz(probabilidad);
             vectorEstados[i].setAmplitudProbabilidad(probabilidad);
-            vectorEstados[i].setValorFitness(universo[i].getGradoBondadIndividuo());   
+            vectorEstados[i].setValorFitness(universo[i].getGradoBondadIndividuo());
+            vectorEstados[i].setSumaFactorPonderacion(universo[i].getSumaFactorPonderacion());
         }
         /*double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(N);
         EstadoCuantico[][] matrizHadamardEstados=adaptaMatriz(matrizHadamard);
@@ -89,11 +91,12 @@ public class AlgoritmoGrover {
         int contador=0;
         while(true){
             if (indiceOraculo!=indice &&
-                vectorEstados[indiceOraculo].getValorFitness()>vectorEstados[indice].getValorFitness()) {
+                vectorEstados[indiceOraculo].getValorFitness()>vectorEstados[indice].getValorFitness()&&
+                vectorEstados[indiceOraculo].getSumaFactorPonderacion()<this.N*2/5) {
                 break;
             }
             else{
-                if (contador>50) break;
+                if (contador>200) break;
                 indiceOraculo=(int) (Math.random() * this.totalElementos);
             }
             contador++;
