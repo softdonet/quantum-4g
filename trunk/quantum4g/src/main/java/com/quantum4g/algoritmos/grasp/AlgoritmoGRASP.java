@@ -38,7 +38,7 @@ public class AlgoritmoGRASP {
     }
     
     //M�todo principal de la ejecuci�n del algoritmo
-    public void ejecucionGRASP(){
+    public double ejecucionGRASP(){
 
         //System.out.println("Antes de inicializar Lista de Genes");
         inicializarListaGenes(this.listaGenes,this.listaTriada);
@@ -83,7 +83,7 @@ public class AlgoritmoGRASP {
 
                 //System.out.println("Antes de activacion de Gen");
                 cromosoma.activarGen(genSeleccionado.getNumeroGen(),true);
-                cromosoma.getGenes().get(genSeleccionado.getNumeroGen()).setGradoBondad(genSeleccionado.getTriada().getFactorPositivo()+genSeleccionado.getTriada().getFactorNegativo()*genSeleccionado.getTriada().getFactorPonderacion());
+                cromosoma.getGenes().get(genSeleccionado.getNumeroGen()).setGradoBondad(genSeleccionado.getGradoBondad());
                 sumaFactorPonderacion+=genSeleccionado.getTriada().getFactorPonderacion();
                 //System.out.println("Antes de eliminar el gen del indice seleccionado");
                 listaTemporal.remove(indiceRCL);
@@ -100,17 +100,23 @@ public class AlgoritmoGRASP {
 
         /*Impresion de resultados*/
 
+        //DEBUGGING
+        double valorResultadoGRASP=-1;
         for (int i=0;i<poblacionInicial.size();i++)
         {
-            System.out.print("Grado de bondad del cromosoma "+i+" es: ");
+            //System.out.print("Solucion GRASP "+i+" es: ");
             double valorFitness=0;
             for (int j=0;j<poblacionInicial.get(i).getGenes().size();j++){
-                System.out.print(poblacionInicial.get(i).getGenes().get(j).getValor()?1:0);
+            //    System.out.print(poblacionInicial.get(i).getGenes().get(j).getValor()?1:0);
             }
-            System.out.print(" con valor de fitness " + poblacionInicial.get(i).getGradoBondadIndividuo());
-            System.out.println();
+            //System.out.print(" con valor de fitness " + poblacionInicial.get(i).getGradoBondadIndividuo());
+            //System.out.println();
         }
-
+        //DEBUGGING
+        if (poblacionInicial.size()>0 && poblacionInicial.get(0)!=null){
+            valorResultadoGRASP=poblacionInicial.get(0).getGradoBondadIndividuo();
+        }
+        return valorResultadoGRASP;
 
     }
 
@@ -134,7 +140,7 @@ public class AlgoritmoGRASP {
             Gen gen=new Gen();
             gen.setNumeroGen(i);
             gen.setTriada(listaTriada[i]);
-            valorBondad=(listaTriada[i].getFactorPositivo()+listaTriada[i].getFactorNegativo())/(listaTriada[i].getFactorPonderacion());
+            valorBondad=(listaTriada[i].getFactorPositivo()+listaTriada[i].getFactorNegativo())*(listaTriada[i].getFactorPonderacion());
             gen.setGradoBondad(valorBondad);
             listaGenes.add(gen);
         }

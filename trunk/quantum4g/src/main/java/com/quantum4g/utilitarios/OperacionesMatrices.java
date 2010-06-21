@@ -107,7 +107,7 @@ public class OperacionesMatrices {
         return producto;
     }
 
-    public void productoConEscalar(int i, EstadoCuantico[][] vectorProducto) {
+    public void productoMatrizConEscalar(int i, EstadoCuantico[][] vectorProducto) {
         for (int j=0;j<vectorProducto.length;j++){
             for (int k=0;k<vectorProducto.length;k++){
                 vectorProducto[j][k].setAmplitudProbabilidad(vectorProducto[j][k].getAmplitudProbabilidad()*i);
@@ -116,7 +116,14 @@ public class OperacionesMatrices {
         }
     }
 
-    public EstadoCuantico[][] restar(EstadoCuantico[][] matriz1, int[][] matriz2) {
+    public void productoVectorConEscalar(double n, EstadoCuantico[] vector,EstadoCuantico[] vectorRetorno) {
+        for (int i=0;i<vector.length;i++){
+                vectorRetorno[i].setAmplitudProbabilidad(vector[i].getAmplitudProbabilidad()*n);
+                vectorRetorno[i].setValorMatriz(vector[i].getValorMatriz()*n);
+        }      
+    }
+
+    public EstadoCuantico[][] restaMatrices(EstadoCuantico[][] matriz1, int[][] matriz2) {
 
          int tamVector=matriz1.length;
          EstadoCuantico[][] resta = new EstadoCuantico[matriz1.length][matriz1[0].length];
@@ -129,6 +136,31 @@ public class OperacionesMatrices {
             }
         }
        return resta;
+    }
+
+    public void restaVectores(EstadoCuantico[] vectorEstados, EstadoCuantico[] vectorOraculo) {
+
+         int tamVector=vectorEstados.length;
+         if (vectorEstados.length==vectorOraculo.length){
+             for (int i=0;i<tamVector;i++){
+                    vectorEstados[i].setAmplitudProbabilidad(vectorEstados[i].getAmplitudProbabilidad()-vectorOraculo[i].getAmplitudProbabilidad());
+                    vectorEstados[i].setValorMatriz(vectorEstados[i].getAmplitudProbabilidad());
+            }
+        }
+    }
+
+
+    public double productoPuntoVectores(EstadoCuantico[] vector1,EstadoCuantico[] vector2){
+        double producto=0;
+        if (vector1.length==vector2.length){
+            for (int i=0;i<vector1.length;i++){
+                producto=producto+vector1[i].getValorMatriz()*vector2[i].getValorMatriz();
+            }
+        }
+        else{
+            throw new UnsupportedOperationException("Operacion no permitida");
+        }
+        return producto;
     }
 
     public int[][] getMatrizIdentidad() {

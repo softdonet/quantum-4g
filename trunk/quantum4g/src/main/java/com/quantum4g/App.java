@@ -8,22 +8,32 @@ import com.quantum4g.experimentos.principal.Principal;
 public class App 
 {
     public static void main(String[] args) {
+          double resultadoGrover;
+          double resultadoGrasp;
+          double groverWins=0;
+          double graspWins=0;
 
-          Principal principal=new Principal(10);
-          Triada[] triadaExperimento= principal.generaValoresTriadaGen(10);
-          AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(10, principal.inicializaUniverso(triadaExperimento));
-          algoritmoGrover.ejecucionGrover();
+          for (int i=0;i<100;i++)
+          {
+              Principal principal=new Principal(10);
+              Triada[] triadaExperimento= principal.generaValoresTriadaGen(10);
+              //Ejecucion GRASP
+              AlgoritmoGRASP algoritmoGRASP=new AlgoritmoGRASP(10, triadaExperimento);
+              resultadoGrasp=algoritmoGRASP.ejecucionGRASP();
+              //Ejecucion Grover
+              AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(10, principal.inicializaUniverso(triadaExperimento));
+              resultadoGrover=algoritmoGrover.ejecucionGrover();
 
-          AlgoritmoGRASP algoritmoGRASP=new AlgoritmoGRASP(10, triadaExperimento);
-          algoritmoGRASP.ejecucionGRASP();
-          //        OperacionesMatrices operacion=new OperacionesMatrices(2);
-//        double[][] matrizHadamard=operacion.crearTransfHadamard( 2);
-//
-//        for (int i=0;i<matrizHadamard.length;i++){
-//            for (int j=0;j<matrizHadamard.length;j++){
-//                System.out.print(matrizHadamard[i][j]+" ");
-//            }
-//            System.out.println();
-//        }
+              if (resultadoGrover>resultadoGrasp){
+                  groverWins++;
+              }
+              else{
+                  graspWins++;
+              }
+          }
+          System.out.println("\n\n\n");
+          System.out.println("Victorias GROVER: "+groverWins);
+          System.out.println("Victorias GRASP: "+graspWins);
+
     }
 }
