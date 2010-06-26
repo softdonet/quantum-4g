@@ -37,7 +37,7 @@ public class AlgoritmoGrover {
 
         EstadoCuantico[] vectorEstadosInicial=new EstadoCuantico[totalElementos];
         EstadoCuantico[] vectorEstadosActual=new EstadoCuantico[totalElementos];
-        EstadoCuantico[] vectorEstadosOraculo= new EstadoCuantico[totalElementos];
+        EstadoCuantico[] vectorEstadosOraculo= null;
         //EstadoCuantico[][] matrizGrover=null;
 
         //Valor tentativo inicial y aleatorio
@@ -71,9 +71,6 @@ public class AlgoritmoGrover {
         return universo[m].getGradoBondadIndividuo();
     }
 
-    private EstadoCuantico[][] adaptaMatriz(double[][] matrizHadamard) {
-        return null;
-    }
 
     private void inicializarEstadosBase(EstadoCuantico[] vectorEstados,int N) {
         double probabilidad=1/Math.sqrt(totalElementos);
@@ -92,12 +89,6 @@ public class AlgoritmoGrover {
          * */
     }
 
-//    private EstadoCuantico[][] inicializarOperadorGrover(EstadoCuantico[] vectorEstados) {
-//        EstadoCuantico[] estadoBaseConjugado= getOperacionesMatrices().hallaDual(vectorEstados);
-//        EstadoCuantico[][] matrizProducto=getOperacionesMatrices().productoVectorial(vectorEstados,estadoBaseConjugado);
-//        getOperacionesMatrices().productoConEscalar(2,matrizProducto);
-//        return getOperacionesMatrices().restar(matrizProducto,getOperacionesMatrices().getMatrizIdentidad());
-//    }
 
     private EstadoCuantico[] aplicarOraculo(EstadoCuantico[] vectorEstados, int indice) {
         
@@ -125,7 +116,7 @@ public class AlgoritmoGrover {
                 break;
             }
             else{
-                if (contador>4096) {
+                if (contador>10) {
                     indiceOraculo=indice;
                     break;
                 }

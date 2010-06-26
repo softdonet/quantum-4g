@@ -29,7 +29,7 @@ public class Principal {
         for (int l=0;l<N;l++){
             triada[l]=new Triada();
             triada[l].setFactorPositivo(Math.random()*100);
-            triada[l].setFactorNegativo(Math.random()*100*-1);
+            triada[l].setFactorNegativo(Math.random()*50*-1);
             triada[l].setFactorPonderacion(Math.random());
         }
         return triada;
@@ -57,7 +57,9 @@ public class Principal {
                 gen.setValor(valorLogico);
                 gen.setGradoBondad((triada[j].getFactorPositivo()+triada[j].getFactorNegativo())*triada[j].getFactorPonderacion());
                 universo[i].getGenes().add(gen);
-                sumaFactorPonderacion+=triada[j].getFactorPonderacion();
+                if (valorLogico) {
+                    sumaFactorPonderacion+=triada[j].getFactorPonderacion();
+                }
             }
             universo[i].setSumaFactorPonderacion(sumaFactorPonderacion);
             universo[i].hallaFactorBondadIndividuo();
