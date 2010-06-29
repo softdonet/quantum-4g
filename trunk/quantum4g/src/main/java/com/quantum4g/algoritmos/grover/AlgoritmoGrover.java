@@ -20,6 +20,9 @@ public class AlgoritmoGrover {
     //Vector de Estados
     //private EstadoCuantico[] vectorEstados;
 
+    //Cantidad de operaciones cuanticas
+    private int cantidadOperaciones;
+
     private int totalElementos;
 
     private OperacionesMatrices operacionesMatrices;
@@ -31,6 +34,7 @@ public class AlgoritmoGrover {
         this.totalElementos= (int)(Math.pow(2, N));
         this.operacionesMatrices=new OperacionesMatrices(N);
         this.universo=universo;
+        this.cantidadOperaciones=0;
     }
 
     public double ejecucionGrover(){
@@ -42,14 +46,17 @@ public class AlgoritmoGrover {
 
         //Valor tentativo inicial y aleatorio
         int m = (int) (Math.random()*totalElementos);
+        this.cantidadOperaciones++;
         int cantidadIteraciones=(int) (Math.sqrt(totalElementos));
         int indiceResultado = 0;
+
         
         inicializarEstadosBase(vectorEstadosInicial,N);
+        this.cantidadOperaciones+=(int)Math.log(this.totalElementos);
         //Bucle dentro del cual se ejecutara Grover
         for (int i=0;i<cantidadIteraciones;i++){
             inicializarEstadosBase(vectorEstadosActual,N);
-            //matrizGrover=inicializarOperadorGrover(vectorEstados);
+            this.cantidadOperaciones+=(int)Math.log(this.totalElementos);
             for (int j=0;j<cantidadIteraciones;j++){
                 double coeficiente=0;
                 /*
@@ -59,16 +66,19 @@ public class AlgoritmoGrover {
                  * POR EL MOMENTO ALEATORIAMENTE.
                  */
                 vectorEstadosOraculo=aplicarOraculo(vectorEstadosActual,m);
+                this.cantidadOperaciones++;
                 coeficiente=2*getOperacionesMatrices().productoPuntoVectores(vectorEstadosInicial, vectorEstadosOraculo);
                 getOperacionesMatrices().productoVectorConEscalar(coeficiente, vectorEstadosInicial,vectorEstadosActual);
                 getOperacionesMatrices().restaVectores(vectorEstadosActual, vectorEstadosOraculo);
             }
             m=simularMedicion(vectorEstadosActual);
+            //Multiplicar por la probabilidad
+            this.cantidadOperaciones++;
         }
         //System.out.println("La solucion GROVER esta en "+ m + " con valor de fitness total:" +
         //        universo[m].getGradoBondadIndividuo());
 
-        return universo[m].getGradoBondadIndividuo();
+        return universo[m].getGradoBondadIndividuo()*0.80;
     }
 
 
@@ -112,7 +122,7 @@ public class AlgoritmoGrover {
         while(true){
             if (indiceOraculo!=indice &&
                 vectorEstados[indiceOraculo].getValorFitness()>vectorEstados[indice].getValorFitness()&&
-                vectorEstados[indiceOraculo].getSumaFactorPonderacion()<this.N*2/5) {
+                vectorEstados[indiceOraculo].getSumaFactorPonderacion()<this.N/2) {
                 break;
             }
             else{
@@ -148,6 +158,14 @@ public class AlgoritmoGrover {
 
     public void setOperacionesMatrices(OperacionesMatrices operacionesMatrices) {
         this.operacionesMatrices = operacionesMatrices;
+    }
+
+    public int getCantidadOperaciones() {
+        return cantidadOperaciones;
+    }
+
+    public void setCantidadOperaciones(int cantidadOperaciones) {
+        this.cantidadOperaciones = cantidadOperaciones;
     }
 
 
