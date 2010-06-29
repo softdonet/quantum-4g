@@ -26,6 +26,7 @@ public class App
           out2.writeBytes("Algoritmo Grover: \n\n");
           out3.writeBytes("Algoritmo Grasp: \n\n");
 
+          //Que se lean de un archivo de texto, la cantidad, el alfa, el N
           int cantidadIteraciones=100;
           for (int i=0;i<cantidadIteraciones;i++)
           {
@@ -37,7 +38,7 @@ public class App
               //Ejecucion Grover
               AlgoritmoGrover algoritmoGrover=new AlgoritmoGrover(10, principal.inicializaUniverso(triadaExperimento));
               resultadoGrover=algoritmoGrover.ejecucionGrover();
-
+              out1.writeBytes("Iteracion : " + i + " de " + cantidadIteraciones+ "\n\n");
               out1.writeBytes("Datos de Entrada: \n\n");
 
               for (int h=0;h<triadaExperimento.length;h++){
@@ -48,12 +49,13 @@ public class App
               }
 
               out1.writeBytes("Datos de Salida: \n\n");
-              out1.writeBytes("Iteracion : " + i + " de " + cantidadIteraciones+ "\n");
               out1.writeBytes("Algoritmo Grasp: "+resultadoGrasp + "\n");
               out1.writeBytes("Algoritmo Grover: "+resultadoGrover + "\n\n");
+              out1.writeBytes("Algoritmo Grasp demoro: "+ algoritmoGRASP.getCantidadOperaciones() +" operaciones \n");
+              out1.writeBytes("Algoritmo Grover demoro: "+ algoritmoGrover.getCantidadOperaciones()  +" operaciones \n\n");
 
-              out2.writeBytes(resultadoGrover + "\n");
-              out3.writeBytes(resultadoGrasp + "\n");
+              out2.writeBytes(resultadoGrover + "\t"+algoritmoGrover.getCantidadOperaciones()+"\n");
+              out3.writeBytes(resultadoGrasp + "\t"+algoritmoGRASP.getCantidadOperaciones()+"\n");
 
               if (resultadoGrover>resultadoGrasp){
                   groverWins++;

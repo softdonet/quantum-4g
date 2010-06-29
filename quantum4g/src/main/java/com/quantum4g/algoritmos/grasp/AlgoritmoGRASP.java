@@ -23,6 +23,9 @@ public class AlgoritmoGRASP {
     //Total de Elementos
     private int totalElementos;
 
+    //Cantidad de operaciones clasicas
+    private int cantidadOperaciones;
+
     //Lista de los Factores de Bondad por Gen del universo
     private List<Gen> listaGenes;
 
@@ -35,9 +38,10 @@ public class AlgoritmoGRASP {
         this.totalElementos=(int)(Math.pow(2,N));
         this.listaTriada=listaTriada;
         this.listaGenes=new ArrayList<Gen>();
+        this.cantidadOperaciones=0;
     }
     
-    //Mï¿½todo principal de la ejecuciï¿½n del algoritmo
+    //Metodo principal de la ejecucion del algoritmo
     public double ejecucionGRASP(){
 
         //System.out.println("Antes de inicializar Lista de Genes");
@@ -61,43 +65,55 @@ public class AlgoritmoGRASP {
         //System.out.println("Antes de ordenar  la lista por factores de bondad");
         ordenarListaFactoresBondad(this.listaGenes);
 
+        this.cantidadOperaciones+=5*this.listaTriada.length;
+
         for (int i=0;i<cantidadIteraciones;i++){
 
             //System.out.println("Iteracion "+i);
             sumaFactorPonderacion=0;
             cromosoma=new Cromosoma(N);
             cromosoma.inicializarGenes();
+            this.cantidadOperaciones++;
             listaTemporal=new ArrayList<Gen>();
             //Creacion de la lista de Genes que sera modificada
             for (int j=0;j<this.listaGenes.size();j++){
                 listaTemporal.add(listaGenes.get(j));
             }
             //IMPORTANTE, cambiado de N/2 a N/4
-            while(sumaFactorPonderacion< (this.N*2/5) && listaTemporal.size()>0){
+            while(sumaFactorPonderacion< (this.N/2) && listaTemporal.size()>0){
 
                 //System.out.println("Iteracion secundaria de "+ i );
                 indiceSuperior=listaTemporal.size()-1;
                 indiceInferior=0;
+                this.cantidadOperaciones++;
                 indiceRCL=(int) (Math.random() * (indiceInferior + alfa * (indiceSuperior - indiceInferior)) + indiceInferior);
+                this.cantidadOperaciones++;
                 genSeleccionado=listaTemporal.get(indiceRCL);
-
+                this.cantidadOperaciones++;
                 //System.out.println("Antes de activacion de Gen");
                 cromosoma.activarGen(genSeleccionado.getNumeroGen(),true);
+                this.cantidadOperaciones++;
                 cromosoma.getGenes().get(genSeleccionado.getNumeroGen()).setGradoBondad(genSeleccionado.getGradoBondad());
+                this.cantidadOperaciones++;
                 sumaFactorPonderacion+=genSeleccionado.getTriada().getFactorPonderacion();
+                this.cantidadOperaciones++;
                 //System.out.println("Antes de eliminar el gen del indice seleccionado");
                 listaTemporal.remove(indiceRCL);
+                this.cantidadOperaciones++;
             }
             if (sumaFactorPonderacion > (this.N*2/5)){
                 cromosoma.activarGen(indiceRCL,false);
+                this.cantidadOperaciones++;
             }
             //System.out.println("Despues de añadir el "+ i+ "-esimo cromosoma");
             cromosoma.hallaFactorBondadIndividuo();
+            this.cantidadOperaciones++;
             poblacionInicial.add(cromosoma);
+            this.cantidadOperaciones++;
         }
         //System.out.println("Antes de la eliminacion de Repetidos");
         poblacionInicial=eliminarRepetidos(poblacionInicial);
-
+        this.cantidadOperaciones++;
         /*Impresion de resultados*/
 
         //DEBUGGING
@@ -166,6 +182,14 @@ public class AlgoritmoGRASP {
             if (!seRepite) poblacionFinal.add(cromosomaI);
         }
         return poblacionFinal;
+    }
+
+    public int getCantidadOperaciones() {
+        return cantidadOperaciones;
+    }
+
+    public void setCantidadOperaciones(int cantidadOperaciones) {
+        this.cantidadOperaciones = cantidadOperaciones;
     }
 
 }
