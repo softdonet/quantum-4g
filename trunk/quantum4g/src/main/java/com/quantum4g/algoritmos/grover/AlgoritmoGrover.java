@@ -17,9 +17,6 @@ public class AlgoritmoGrover {
     //Numero de genes
     private int N;
 
-    //Vector de Estados
-    //private EstadoCuantico[] vectorEstados;
-
     //Cantidad de operaciones cuanticas
     private int cantidadOperaciones;
 
@@ -42,7 +39,6 @@ public class AlgoritmoGrover {
         EstadoCuantico[] vectorEstadosInicial=new EstadoCuantico[totalElementos];
         EstadoCuantico[] vectorEstadosActual=new EstadoCuantico[totalElementos];
         EstadoCuantico[] vectorEstadosOraculo= null;
-        //EstadoCuantico[][] matrizGrover=null;
 
         //Valor tentativo inicial y aleatorio
         int m = (int) (Math.random()*totalElementos);
@@ -50,7 +46,6 @@ public class AlgoritmoGrover {
         int cantidadIteraciones=(int) (Math.sqrt(totalElementos));
         int indiceResultado = 0;
 
-        
         inicializarEstadosBase(vectorEstadosInicial,N);
         this.cantidadOperaciones+=(int)Math.log(this.totalElementos);
         //Bucle dentro del cual se ejecutara Grover
@@ -72,13 +67,16 @@ public class AlgoritmoGrover {
                 getOperacionesMatrices().restaVectores(vectorEstadosActual, vectorEstadosOraculo);
             }
             m=simularMedicion(vectorEstadosActual);
-            //Multiplicar por la probabilidad
+            //System.out.println("Probabilidad inicial "+ Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2));
+            //System.out.println("Diferencia de prob: "+ (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)-Math.pow(vectorEstadosActual[0].getAmplitudProbabilidad(),2)));
             this.cantidadOperaciones++;
         }
-        //System.out.println("La solucion GROVER esta en "+ m + " con valor de fitness total:" +
-        //        universo[m].getGradoBondadIndividuo());
-
-        return universo[m].getGradoBondadIndividuo()*0.80;
+        if (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)<0.5){
+            return universo[m].getGradoBondadIndividuo()*Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2);
+        }
+        else{
+            return universo[m].getGradoBondadIndividuo();
+        }
     }
 
 
@@ -144,8 +142,9 @@ public class AlgoritmoGrover {
         int indiceProbabilidad=0;
 
         for (int i=0;i<vectorEstados.length;i++){
-            if (vectorEstados[i].getAmplitudProbabilidad()>mayorProbabilidad){
-                mayorProbabilidad=vectorEstados[i].getAmplitudProbabilidad();
+            //Nota: La probabilidad es el cuadrado de la amplitud
+            if (Math.pow(vectorEstados[i].getAmplitudProbabilidad(),2)>mayorProbabilidad){
+                mayorProbabilidad=Math.pow(vectorEstados[i].getAmplitudProbabilidad(),2);
                 indiceProbabilidad=i;
             }
         }
@@ -167,7 +166,5 @@ public class AlgoritmoGrover {
     public void setCantidadOperaciones(int cantidadOperaciones) {
         this.cantidadOperaciones = cantidadOperaciones;
     }
-
-
 
 }

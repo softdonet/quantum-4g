@@ -1,0 +1,132 @@
+Iteracion : 0 de 10
+
+Datos de Entrada: 
+
+Triada 0:
+Factor Positivo: 17.027496482510152:
+Factor Negativo: -6.96873445547041:
+Factor Ponderación: 0.09582187620589933:
+
+Triada 1:
+Factor Positivo: 40.43155606497497:
+Factor Negativo: -27.976046948632337:
+Factor Ponderación: 0.6588977934038431:
+
+Triada 2:
+Factor Positivo: 28.319664959337054:
+Factor Negativo: -38.43656620871859:
+Factor Ponderación: 0.7503196887560676:
+
+Triada 3:
+Factor Positivo: 42.13878325237299:
+Factor Negativo: -16.932752716655326:
+Factor Ponderación: 0.22574196758363163:
+
+Triada 4:
+Factor Positivo: 20.31419465245111:
+Factor Negativo: -7.361022142533452:
+Factor Ponderación: 0.07205411263456352:
+
+Triada 5:
+Factor Positivo: 30.449759903811792:
+Factor Negativo: -25.851539289254937:
+Factor Ponderación: 0.6000642952170613:
+
+Triada 6:
+Factor Positivo: 21.400831541084585:
+Factor Negativo: -28.481092588882134:
+Factor Ponderación: 0.5916789180597088:
+
+Triada 7:
+Factor Positivo: 96.04855003150703:
+Factor Negativo: -0.4619975460985415:
+Factor Ponderación: 0.33731753759383754:
+
+Triada 8:
+Factor Positivo: 98.63797459510172:
+Factor Negativo: -43.393442830204165:
+Factor Ponderación: 0.8743110411319608:
+
+Triada 9:
+Factor Positivo: 96.84346698222568:
+Factor Negativo: -44.19817910822236:
+Factor Ponderación: 0.7479961668072885:
+
+Datos de Salida: 
+
+Algoritmo Grasp: 125.73177049686188
+Algoritmo Grover: 3.190428189620917
+
+Algoritmo Grasp demoro: 1531 operaciones 
+Algoritmo Grover demoro: 1255 operaciones 
+
+GRASP ganó por : 122.54134230724097
+
+----------------------------------------------------------------------- 
+
+Iteracion : 1 de 10
+
+Datos de Entrada: 
+
+Triada 0:
+Factor Positivo: 47.363815768053016:
+Factor Negativo: -13.955432350415842:
+Factor Ponderación: 0.3663700541190863:
+
+Triada 1:
+Factor Positivo: 27.90754587503357:
+Factor Negativo: -29.58069534419433:
+Factor Ponderación: 0.3265527814063468:
+
+Triada 2:
+Factor Positivo: 46.45736859773968:
+Factor Negativo: -18.941962298449987:
+Factor Ponderación: 0.6937716679999465:
+
+Triada 3:
+Factor Positivo: 62.2449072958268:
+Factor Negativo: -40.79745561080549:
+Factor Ponderación: 0.8409742445143237:
+
+Triada 4:
+Factor Positivo: 7.796586820353079:
+Factor Negativo: -12.673586552488453:
+Factor Ponderación: 0.23684340212049304:
+
+Triada 5:
+Factor Positivo: 92.4573312859403:
+Factor Negativo: -23.461962382087968:
+Factor Ponderación: 0.026916841048308604:
+
+Triada 6:
+Factor Positivo: 68.63641864030153:
+Factor Negativo: -16.41569333438285:
+Factor Ponderación: 0.2398577148065979:
+
+Triada 7:
+Factor Positivo: 80.08065627958386:
+Factor Negativo: -21.586855409171875:
+Factor Ponderación: 0.8050608757606283:
+
+Triada 8:
+Factor Positivo: 76.36804823833842:
+Factor Negativo: -40.90743100513202:
+Factor Ponderación: 0.28716167749338284:
+
+Triada 9:
+Factor Positivo: 65.05743203746029:
+Factor Negativo: -12.951122234004986:
+Factor Ponderación: 0.8724077016400692:
+
+Datos de Salida: 
+
+Algoritmo Grasp: 152.53933505675298
+Algoritmo Grover: 164.77916629750393
+
+Algoritmo Grasp demoro: 1531 operaciones 
+Algoritmo Grover demoro: 1255 operaciones 
+
+GROVER ganó por : 12.23983124075096
+
+----------------------------------------------------------------------- 
+
