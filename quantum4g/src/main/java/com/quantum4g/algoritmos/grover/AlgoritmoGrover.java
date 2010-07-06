@@ -71,7 +71,7 @@ public class AlgoritmoGrover {
             //System.out.println("Diferencia de prob: "+ (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)-Math.pow(vectorEstadosActual[0].getAmplitudProbabilidad(),2)));
             this.cantidadOperaciones++;
         }
-        if (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)<0.5){
+        if (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)<0.4){
             return universo[m].getGradoBondadIndividuo()*Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2);
         }
         else{
