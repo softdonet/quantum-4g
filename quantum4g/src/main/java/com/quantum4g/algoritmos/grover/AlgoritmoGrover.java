@@ -44,7 +44,6 @@ public class AlgoritmoGrover {
         int m = (int) (Math.random()*totalElementos);
         this.cantidadOperaciones++;
         int cantidadIteraciones=(int) (Math.sqrt(totalElementos));
-        int indiceResultado = 0;
 
         inicializarEstadosBase(vectorEstadosInicial,N);
         this.cantidadOperaciones+=(int)Math.log(this.totalElementos);
@@ -71,7 +70,7 @@ public class AlgoritmoGrover {
             //System.out.println("Diferencia de prob: "+ (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)-Math.pow(vectorEstadosActual[0].getAmplitudProbabilidad(),2)));
             this.cantidadOperaciones++;
         }
-        if (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)<0.4){
+        if (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)<0.6){
             return universo[m].getGradoBondadIndividuo()*Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2);
         }
         else{
@@ -124,7 +123,7 @@ public class AlgoritmoGrover {
                 break;
             }
             else{
-                if (contador>10) {
+                if (contador>100) {
                     indiceOraculo=indice;
                     break;
                 }
@@ -143,7 +142,8 @@ public class AlgoritmoGrover {
 
         for (int i=0;i<vectorEstados.length;i++){
             //Nota: La probabilidad es el cuadrado de la amplitud
-            if (Math.pow(vectorEstados[i].getAmplitudProbabilidad(),2)>mayorProbabilidad){
+            if (Math.pow(vectorEstados[i].getAmplitudProbabilidad(),2)>=mayorProbabilidad&&
+                    vectorEstados[i].getSumaFactorPonderacion()< this.N/2){
                 mayorProbabilidad=Math.pow(vectorEstados[i].getAmplitudProbabilidad(),2);
                 indiceProbabilidad=i;
             }
