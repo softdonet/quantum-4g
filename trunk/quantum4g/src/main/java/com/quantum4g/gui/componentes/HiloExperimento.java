@@ -71,10 +71,10 @@ public class HiloExperimento extends Thread {
                 out1.writeBytes("Iteración: " + i + " de " + this.iteraciones + "\n\n");
                 out1.writeBytes("Datos de Entrada: \n\n");
                 for (int h = 0; h < triadaExperimento.length; h++) {
-                    out1.writeBytes("Triada " + h + ":\n");
-                    out1.writeBytes("Factor Positivo: " + df.format(triadaExperimento[h].getFactorPositivo()) + ":\n");
-                    out1.writeBytes("Factor Negativo: " + df.format(triadaExperimento[h].getFactorNegativo()) + ":\n");
-                    out1.writeBytes("Factor Ponderación: " + df.format(triadaExperimento[h].getFactorPonderacion()) + ":\n\n");
+                    out1.writeBytes("Triada " + h + ": \n");
+                    out1.writeBytes("Factor Positivo: " + df.format(triadaExperimento[h].getFactorPositivo()) + "\n");
+                    out1.writeBytes("Factor Negativo: " + df.format(triadaExperimento[h].getFactorNegativo()) + "\n");
+                    out1.writeBytes("Factor Ponderación: " + df.format(triadaExperimento[h].getFactorPonderacion()) + "\n\n");
                 }
                 out1.writeBytes("Datos de Salida: \n\n");
                 out1.writeBytes("Grado de Bondad Máximo - Algoritmo Grasp: " + df.format(resultadoGrasp) + "\n");
