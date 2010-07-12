@@ -13,6 +13,7 @@ import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,6 +43,7 @@ public class HiloExperimento extends Thread {
             double groverWins = 0;
             double graspWins = 0;
             out1 = new DataOutputStream(new FileOutputStream("./resultadosExperimento.txt"));
+            DecimalFormat df=new DecimalFormat("####.000");
             DataOutputStream out2 = new DataOutputStream(new FileOutputStream("./resultadosGrover.txt"));
             DataOutputStream out3 = new DataOutputStream(new FileOutputStream("./resultadosGrasp.txt"));
             out2.writeBytes("Algoritmo Grover: \n\n");
@@ -66,40 +68,41 @@ public class HiloExperimento extends Thread {
                 this.ventanaE.dibujarMayorMenor = true;
                 this.ventanaE.repaint();
                 Thread.sleep(1000*this.velocidad);
-                out1.writeBytes("Iteracion : " + i + " de " + this.iteraciones + "\n\n");
+                out1.writeBytes("Iteración: " + i + " de " + this.iteraciones + "\n\n");
                 out1.writeBytes("Datos de Entrada: \n\n");
                 for (int h = 0; h < triadaExperimento.length; h++) {
                     out1.writeBytes("Triada " + h + ":\n");
-                    out1.writeBytes("Factor Positivo: " + triadaExperimento[h].getFactorPositivo() + ":\n");
-                    out1.writeBytes("Factor Negativo: " + triadaExperimento[h].getFactorNegativo() + ":\n");
-                    out1.writeBytes("Factor Ponderación: " + triadaExperimento[h].getFactorPonderacion() + ":\n\n");
+                    out1.writeBytes("Factor Positivo: " + df.format(triadaExperimento[h].getFactorPositivo()) + ":\n");
+                    out1.writeBytes("Factor Negativo: " + df.format(triadaExperimento[h].getFactorNegativo()) + ":\n");
+                    out1.writeBytes("Factor Ponderación: " + df.format(triadaExperimento[h].getFactorPonderacion()) + ":\n\n");
                 }
                 out1.writeBytes("Datos de Salida: \n\n");
-                out1.writeBytes("Algoritmo Grasp: " + resultadoGrasp + "\n");
-                out1.writeBytes("Algoritmo Grover: " + resultadoGrover + "\n\n");
+                out1.writeBytes("Grado de Bondad Máximo - Algoritmo Grasp: " + df.format(resultadoGrasp) + "\n");
+                out1.writeBytes("Grado de Bondad Máximo - Algoritmo Grover: " + df.format(resultadoGrover) + "\n\n");
                 out1.writeBytes("Algoritmo Grasp demoro: " + algoritmoGRASP.getCantidadOperaciones() + " operaciones \n");
                 out1.writeBytes("Algoritmo Grover demoro: " + algoritmoGrover.getCantidadOperaciones() + " operaciones \n\n");
-                out2.writeBytes(resultadoGrover + "\t" + algoritmoGrover.getCantidadOperaciones() + "\n");
-                out3.writeBytes(resultadoGrasp + "\t" + algoritmoGRASP.getCantidadOperaciones() + "\n");
+                out2.writeBytes(df.format(resultadoGrover) + "\t" + algoritmoGrover.getCantidadOperaciones() + "\t" +"\n");
+                out3.writeBytes(df.format(resultadoGrasp) + "\t" + algoritmoGRASP.getCantidadOperaciones() + "\n");
                 if (resultadoGrover > resultadoGrasp) {
                     groverWins++;
-                    out1.writeBytes("GROVER ganó por : " + (resultadoGrover - resultadoGrasp) + "\n\n");
+                    out1.writeBytes("Algoritmo Grover ganó por: " + df.format((resultadoGrover - resultadoGrasp)) + " unidades\n\n");
                     this.ventanaE.operacionGrover++;
-                } else {
-                    graspWins++;
-                    out1.writeBytes("GRASP ganó por : " + (resultadoGrasp - resultadoGrover) + "\n\n");
-                    this.ventanaE.operacionGrasp++;
-                }
+                } else
+                    if (resultadoGrasp > resultadoGrover){
+                        graspWins++;
+                        out1.writeBytes("Algoritmo Grasp ganó por : " + df.format((resultadoGrasp - resultadoGrover)) + " unidades\n\n");
+                        this.ventanaE.operacionGrasp++;
+                    } else{
+                        out1.writeBytes("Empate");
+                    }
                 this.ventanaE.repaint();
                 out1.writeBytes("----------------------------------------------------------------------- \n\n");
             }
-            System.out.println("\n\n\n");
-            System.out.println("Victorias GROVER: " + groverWins);
-            System.out.println("Victorias GRASP: " + graspWins);
+            System.out.println("Victorias del Algoritmo Grover: " + groverWins);
+            System.out.println("Victorias del Algoritmo Grasp: " + graspWins);
             out1.close();
             out2.close();
             out3.close();
-            //this.ventanaE.dispose();
 
         } catch (InterruptedException ex) {
             Logger.getLogger(HiloExperimento.class.getName()).log(Level.SEVERE, null, ex);
