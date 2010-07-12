@@ -44,7 +44,7 @@ public class VentanaExperimento extends JFrame implements WindowListener {
     @Override
     public void paint(Graphics g){
         super.paint(g);
-        /*if (iniciarExperimento){
+        if (iniciarExperimento){
             g.drawString("Algoritmo Grover:", 25, 50);
             g.drawString("Algoritmo Grasp:", 25, 100);
             g.drawString("Victorias Grover = " + operacionGrover, 100,150 );
@@ -71,7 +71,7 @@ public class VentanaExperimento extends JFrame implements WindowListener {
                 valorGrover=-1;
                 dibujarMayorMenor=false;
             }
-        }*/
+        }
     }
 
     @Override

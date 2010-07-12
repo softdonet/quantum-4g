@@ -80,6 +80,7 @@ public class AlgoritmoGRASP {
             while(sumaFactorPonderacion< (this.N/2) && listaTemporal.size()>0){
 
                 indiceSuperior=listaTemporal.size()-1;
+                this.cantidadOperaciones++;
                 indiceInferior=0;
                 indiceRCL=(int) (Math.random() * (indiceInferior + alfa * (indiceSuperior - indiceInferior)) + indiceInferior);
                 this.cantidadOperaciones++;

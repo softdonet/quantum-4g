@@ -1,0 +1,25 @@
+PENDIENTES:
+
+1.- Optimizar la aplicacion : Getters, setters, eliminar código innecesario. Mejores prácticas. Refactor
+
+2.- Mejorar GUI, usar dibujos, mejores colores, arreglar problemas de repintado al maximizar.
+
+------------------------------------------3.- Corregir los contadores de operaciones cuanticas y clasicas en el codigo de la aplicacion.
+
+------------------------------------------4.- Revisar el documento de tesis
+
+------------------------------------------5.- Refactor inicial al documento de tesis con las nuevas consideraciones: Cambiar el analisis ANOVA por la prueba T
+
+------------------------------------------6.- Experimentacion numerica: Usando el SPSS y plasmarlo en el documento de tesis
+
+------------------------------------------7.- Agregar los resultados finales (incluyendo graficas al documento de tesis: Grafica probabilidad vs eficacia, N vs eficacia)
+
+------------------------------------------8.- Planteamiento inicial de Resultados, Experimentacion Numerica y Conclusiones
+
+9.- Corregir lo realizado en el punto 8
+
+-----------------------------------------------10.- AGREGAR MODELO MATEMATICO. LISTO!!
+
+-----------------------------------------------11.- REVISAR LA LISTA DE RESULTADOS ESPERADOS
+
+12.- FALTA CALIBRAR EL ALFA DEL GRASP!
