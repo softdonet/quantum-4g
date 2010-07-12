@@ -50,15 +50,12 @@ public class AlgoritmoGrover {
         //Bucle dentro del cual se ejecutara Grover
         for (int i=0;i<cantidadIteraciones;i++){
             inicializarEstadosBase(vectorEstadosActual,N);
-            this.cantidadOperaciones+=(int)Math.log(this.totalElementos);
+            this.cantidadOperaciones+=(int)(Math.log(this.totalElementos)/Math.log(2));
             for (int j=0;j<cantidadIteraciones;j++){
                 double coeficiente=0;
                 vectorEstadosOraculo=aplicarOraculo(vectorEstadosActual,m);
-                this.cantidadOperaciones++;
                 coeficiente=2*getOperacionesMatrices().productoPuntoVectores(vectorEstadosInicial, vectorEstadosOraculo);
-                this.cantidadOperaciones++;
                 getOperacionesMatrices().productoVectorConEscalar(coeficiente, vectorEstadosInicial,vectorEstadosActual);
-                this.cantidadOperaciones++;
                 getOperacionesMatrices().restaVectores(vectorEstadosActual, vectorEstadosOraculo);
                 this.cantidadOperaciones++;
             }
