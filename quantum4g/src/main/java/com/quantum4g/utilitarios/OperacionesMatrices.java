@@ -77,16 +77,6 @@ public class OperacionesMatrices {
         }
     }
 
-    public EstadoCuantico[] hallaDual(EstadoCuantico[] vectorEstados) {
-        EstadoCuantico[] resultadoDual=new EstadoCuantico[vectorEstados.length];
-        for (int i=0;i<vectorEstados.length;i++){
-            resultadoDual[i]=new EstadoCuantico();
-            //TODO, hallar el complejo conjugado
-            resultadoDual[i]=vectorEstados[i];
-        }
-        return resultadoDual;
-    }
-
     public EstadoCuantico[][] productoVectorial(EstadoCuantico[] vector1, EstadoCuantico[] vector2) {
         EstadoCuantico[][] producto;
         //Vector1 equivale al KET y Vector2 al BRA
@@ -148,7 +138,6 @@ public class OperacionesMatrices {
             }
         }
     }
-
 
     public double productoPuntoVectores(EstadoCuantico[] vector1,EstadoCuantico[] vector2){
         double producto=0;
