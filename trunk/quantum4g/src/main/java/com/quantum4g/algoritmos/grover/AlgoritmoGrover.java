@@ -44,33 +44,29 @@ public class AlgoritmoGrover {
         int m = (int) (Math.random()*totalElementos);
         this.cantidadOperaciones++;
         int cantidadIteraciones=(int) (Math.sqrt(totalElementos));
-
         inicializarEstadosBase(vectorEstadosInicial,N);
-        this.cantidadOperaciones+=(int)Math.log(this.totalElementos);
+        //La inicialización de Estados usando el operador de Hadamard toma Log(N) operaciones
+        this.cantidadOperaciones+=(int)(Math.log(this.totalElementos)/Math.log(2));
         //Bucle dentro del cual se ejecutara Grover
         for (int i=0;i<cantidadIteraciones;i++){
             inicializarEstadosBase(vectorEstadosActual,N);
             this.cantidadOperaciones+=(int)Math.log(this.totalElementos);
             for (int j=0;j<cantidadIteraciones;j++){
                 double coeficiente=0;
-                /*
-                 * TODO:
-                 * Falta revisar si el ORACULO siempre se aplicara a un solo elemento o
-                 * ira eligiendo aleatoriamente
-                 * POR EL MOMENTO ALEATORIAMENTE.
-                 */
                 vectorEstadosOraculo=aplicarOraculo(vectorEstadosActual,m);
                 this.cantidadOperaciones++;
                 coeficiente=2*getOperacionesMatrices().productoPuntoVectores(vectorEstadosInicial, vectorEstadosOraculo);
+                this.cantidadOperaciones++;
                 getOperacionesMatrices().productoVectorConEscalar(coeficiente, vectorEstadosInicial,vectorEstadosActual);
+                this.cantidadOperaciones++;
                 getOperacionesMatrices().restaVectores(vectorEstadosActual, vectorEstadosOraculo);
+                this.cantidadOperaciones++;
             }
             m=simularMedicion(vectorEstadosActual);
-            //System.out.println("Probabilidad inicial "+ Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2));
-            //System.out.println("Diferencia de prob: "+ (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)-Math.pow(vectorEstadosActual[0].getAmplitudProbabilidad(),2)));
             this.cantidadOperaciones++;
         }
-        if (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)<0.6){
+       System.out.println(Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2));
+       if (Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2)<0.7){
             return universo[m].getGradoBondadIndividuo()*Math.pow(vectorEstadosActual[m].getAmplitudProbabilidad(),2);
         }
         else{
@@ -90,7 +86,10 @@ public class AlgoritmoGrover {
             vectorEstados[i].setValorFitness(universo[i].getGradoBondadIndividuo());
             vectorEstados[i].setSumaFactorPonderacion(universo[i].getSumaFactorPonderacion());
         }
-        /*double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(N);
+        /* Alternativamente se puede usar la transformación de Hadamard, pero es
+         * computacionalmente mucho más costoso.
+         * En el caso de una Computadora Cuántica, es la única manera de hacerlo por el momento.
+        double[][] matrizHadamard= getOperacionesMatrices().crearTransfHadamard(N);
         EstadoCuantico[][] matrizHadamardEstados=adaptaMatriz(matrizHadamard);
         vectorEstados= getOperacionesMatrices().productoMatrizVector(matrizHadamardEstados, vectorEstados);
          * */
@@ -101,7 +100,7 @@ public class AlgoritmoGrover {
         
         EstadoCuantico[] vectorOraculo=new EstadoCuantico[vectorEstados.length];
         /*Se debe copiar cada atributo, porque al ser los objetos por referencia, al igualar, solo 
-         * se igualaria la referencia y al modificar un valor, se modificarian ambos
+         * se igualaria la referencia y al modificar un valor, se modificarian ambos.
          */
         for (int i=0;i<vectorEstados.length;i++){
             vectorOraculo[i]=new EstadoCuantico();

@@ -44,7 +44,6 @@ public class AlgoritmoGRASP {
     //Metodo principal de la ejecucion del algoritmo
     public double ejecucionGRASP(){
 
-        //System.out.println("Antes de inicializar Lista de Genes");
         inicializarListaGenes(this.listaGenes,this.listaTriada);
 
         List<Cromosoma> poblacionInicial=new ArrayList<Cromosoma>();
@@ -55,21 +54,20 @@ public class AlgoritmoGRASP {
         //Valor candidato del factor de relajaciï¿½n
         double alfa=0.3;
 
-        //Declaraciï¿½n de Variables
+        //Declaracion de Variables
         int indiceSuperior,indiceInferior,indiceRCL=0;
         double sumaFactorPonderacion;
         Gen genSeleccionado;
         Cromosoma cromosoma;
         List<Gen> listaTemporal;
 
-        //System.out.println("Antes de ordenar  la lista por factores de bondad");
-        ordenarListaFactoresBondad(this.listaGenes);
-
-        this.cantidadOperaciones+=5*this.listaTriada.length;
+        //ordenarListaFactoresBondad(this.listaGenes);
+        ordenarListaFactoresBondadQuicksort(listaGenes, 0, listaGenes.size()-1);
+        //Complejidad n*log(n) promedio de quicksort
+        this.cantidadOperaciones+=listaGenes.size()*(int)Math.log(listaGenes.size());
 
         for (int i=0;i<cantidadIteraciones;i++){
 
-            //System.out.println("Iteracion "+i);
             sumaFactorPonderacion=0;
             cromosoma=new Cromosoma(N);
             cromosoma.inicializarGenes();
@@ -79,25 +77,20 @@ public class AlgoritmoGRASP {
             for (int j=0;j<this.listaGenes.size();j++){
                 listaTemporal.add(listaGenes.get(j));
             }
-            //IMPORTANTE, cambiado de N/2 a N/4
             while(sumaFactorPonderacion< (this.N/2) && listaTemporal.size()>0){
 
-                //System.out.println("Iteracion secundaria de "+ i );
                 indiceSuperior=listaTemporal.size()-1;
                 indiceInferior=0;
-                this.cantidadOperaciones++;
                 indiceRCL=(int) (Math.random() * (indiceInferior + alfa * (indiceSuperior - indiceInferior)) + indiceInferior);
                 this.cantidadOperaciones++;
                 genSeleccionado=listaTemporal.get(indiceRCL);
                 this.cantidadOperaciones++;
-                //System.out.println("Antes de activacion de Gen");
                 cromosoma.activarGen(genSeleccionado.getNumeroGen(),true);
                 this.cantidadOperaciones++;
                 cromosoma.getGenes().get(genSeleccionado.getNumeroGen()).setGradoBondad(genSeleccionado.getGradoBondad());
                 this.cantidadOperaciones++;
                 sumaFactorPonderacion+=genSeleccionado.getTriada().getFactorPonderacion();
                 this.cantidadOperaciones++;
-                //System.out.println("Antes de eliminar el gen del indice seleccionado");
                 listaTemporal.remove(indiceRCL);
                 this.cantidadOperaciones++;
             }
@@ -105,39 +98,23 @@ public class AlgoritmoGRASP {
                 cromosoma.activarGen(indiceRCL,false);
                 this.cantidadOperaciones++;
             }
-            //System.out.println("Despues de añadir el "+ i+ "-esimo cromosoma");
             cromosoma.hallaFactorBondadIndividuo();
             this.cantidadOperaciones++;
             poblacionInicial.add(cromosoma);
             this.cantidadOperaciones++;
         }
-        //System.out.println("Antes de la eliminacion de Repetidos");
         poblacionInicial=eliminarRepetidos(poblacionInicial);
         this.cantidadOperaciones++;
-        /*Impresion de resultados*/
-
-        //DEBUGGING
+        
         double valorResultadoGRASP=-1;
-        for (int i=0;i<poblacionInicial.size();i++)
-        {
-            //System.out.print("Solucion GRASP "+i+" es: ");
-            double valorFitness=0;
-            for (int j=0;j<poblacionInicial.get(i).getGenes().size();j++){
-            //    System.out.print(poblacionInicial.get(i).getGenes().get(j).getValor()?1:0);
-            }
-            //System.out.print(" con valor de fitness " + poblacionInicial.get(i).getGradoBondadIndividuo());
-            //System.out.println();
-        }
-        //DEBUGGING
         if (poblacionInicial.size()>0 && poblacionInicial.get(0)!=null){
             valorResultadoGRASP=poblacionInicial.get(0).getGradoBondadIndividuo();
         }
         return valorResultadoGRASP;
-
     }
 
+    //Ordenamiento usando Bubblesort
     private void ordenarListaFactoresBondad(List<Gen> listaGenes) {
-        //BUBBLE SORT-- Se puede optimizar
         Gen temporal;
         for (int i=0;i<listaGenes.size();i++){
                 for (int j=0;j<listaGenes.size();j++){
@@ -148,6 +125,27 @@ public class AlgoritmoGRASP {
                    }
                 }
             }
+    }
+
+    private void ordenarListaFactoresBondadQuicksort(List<Gen> listaGenes,int primero,int ultimo){
+        int i=primero, j=ultimo;
+        double pivote=listaGenes.get((primero+ultimo)/2).getGradoBondad();
+        Gen auxiliar;
+        do{
+            while (listaGenes.get(i).getGradoBondad()>pivote) i++;
+            while (listaGenes.get(j).getGradoBondad()<pivote) j--;
+
+            if (i<=j){
+                auxiliar=listaGenes.get(j);
+                listaGenes.set(j, listaGenes.get(i));
+                listaGenes.set(i,auxiliar);
+                i++;
+                j--;
+            }
+        }while (i<=j);
+
+        if (primero<j) ordenarListaFactoresBondadQuicksort(listaGenes,primero,j);
+        if (ultimo>i) ordenarListaFactoresBondadQuicksort(listaGenes, i, ultimo);
     }
 
     private void inicializarListaGenes(List<Gen> listaGenes, Triada[] listaTriada) {
