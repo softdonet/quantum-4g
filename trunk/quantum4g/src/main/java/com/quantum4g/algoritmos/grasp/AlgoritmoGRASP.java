@@ -52,7 +52,7 @@ public class AlgoritmoGRASP {
         int cantidadIteraciones=20;
         
         //Valor candidato del factor de relajaci�n
-        double alfa=0.3;
+        double alfa=0.35;
 
         //Declaracion de Variables
         int indiceSuperior,indiceInferior,indiceRCL=0;
