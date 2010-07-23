@@ -10,7 +10,6 @@ import com.quantum4g.algoritmos.grover.AlgoritmoGrover;
 import com.quantum4g.core.entidades.Triada;
 import com.quantum4g.experimentos.principal.Principal;
 import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -22,11 +21,11 @@ import java.util.logging.Logger;
  * @author Jose
  */
 public class HiloExperimento extends Thread {
-    public VentanaExperimento ventanaE;
-    public boolean terminarHilo=false;
-    public int velocidad=1;
-    public int N;
-    public int iteraciones;
+    private VentanaExperimento ventanaE;
+    private boolean terminarHilo=false;
+    private int velocidad=1;
+    private int N;
+    private int iteraciones;
 
     public HiloExperimento(VentanaExperimento ventanaE,int velocidad,int N,int iteraciones){
         this.ventanaE=ventanaE;
@@ -48,27 +47,27 @@ public class HiloExperimento extends Thread {
             DataOutputStream out3 = new DataOutputStream(new FileOutputStream("./resultadosGrasp.txt"));
             out2.writeBytes("Algoritmo Grover: \n\n");
             out3.writeBytes("Algoritmo Grasp: \n\n");
-            this.ventanaE.iniciarExperimento = true;
+            this.ventanaE.setIniciarExperimento(true);
             //Que se lean de un archivo de texto, la cantidad, el alfa, el N
-            for (int i = 0; i < this.iteraciones && !terminarHilo; i++) {
-                Principal principal = new Principal(this.N);
-                Triada[] triadaExperimento = principal.generaValoresTriadaGen(this.N);
+            for (int i = 0; i < this.getIteraciones() && !isTerminarHilo(); i++) {
+                Principal principal = new Principal(this.getN());
+                Triada[] triadaExperimento = principal.generaValoresTriadaGen(this.getN());
                 //Ejecucion GRASP
-                AlgoritmoGRASP algoritmoGRASP = new AlgoritmoGRASP(this.N, triadaExperimento);
+                AlgoritmoGRASP algoritmoGRASP = new AlgoritmoGRASP(this.getN(), triadaExperimento);
                 resultadoGrasp = algoritmoGRASP.ejecucionGRASP();
-                this.ventanaE.valorGrasp = resultadoGrasp;
-                this.ventanaE.repaint();
-                Thread.sleep(1000*this.velocidad);
+                this.ventanaE.setValorGrasp(resultadoGrasp);
+                this.getVentanaE().repaint();
+                Thread.sleep(1000*this.getVelocidad());
                 //Ejecucion Grover
-                AlgoritmoGrover algoritmoGrover = new AlgoritmoGrover(this.N, principal.inicializaUniverso(triadaExperimento));
+                AlgoritmoGrover algoritmoGrover = new AlgoritmoGrover( this.getN(), principal.inicializaUniverso(triadaExperimento));
                 resultadoGrover = algoritmoGrover.ejecucionGrover();
-                this.ventanaE.valorGrover = resultadoGrover;
-                this.ventanaE.repaint();
-                Thread.sleep(1000*this.velocidad);
-                this.ventanaE.dibujarMayorMenor = true;
-                this.ventanaE.repaint();
-                Thread.sleep(1000*this.velocidad);
-                out1.writeBytes("Iteración: " + i + " de " + this.iteraciones + "\n\n");
+                this.ventanaE.setValorGrover(resultadoGrover);
+                this.getVentanaE().repaint();
+                Thread.sleep(1000*this.getVelocidad());
+                this.ventanaE.setDibujarMayorMenor(true);
+                this.getVentanaE().repaint();
+                Thread.sleep(1000*this.getVelocidad());
+                out1.writeBytes("Iteración: " + i + " de " + this.getIteraciones() + "\n\n");
                 out1.writeBytes("Datos de Entrada: \n\n");
                 for (int h = 0; h < triadaExperimento.length; h++) {
                     out1.writeBytes("Triada " + h + ": \n");
@@ -86,16 +85,16 @@ public class HiloExperimento extends Thread {
                 if (resultadoGrover > resultadoGrasp) {
                     groverWins++;
                     out1.writeBytes("Algoritmo Grover ganó por: " + df.format((resultadoGrover - resultadoGrasp)) + " unidades\n\n");
-                    this.ventanaE.operacionGrover++;
+                    this.ventanaE.setOperacionGrover(this.ventanaE.getOperacionGrover()+1);
                 } else
                     if (resultadoGrasp > resultadoGrover){
                         graspWins++;
                         out1.writeBytes("Algoritmo Grasp ganó por : " + df.format((resultadoGrasp - resultadoGrover)) + " unidades\n\n");
-                        this.ventanaE.operacionGrasp++;
+                        this.ventanaE.setOperacionGrasp(this.ventanaE.getOperacionGrasp()+1);
                     } else{
                         out1.writeBytes("Empate");
                     }
-                this.ventanaE.repaint();
+                this.getVentanaE().repaint();
                 out1.writeBytes("----------------------------------------------------------------------- \n\n");
             }
             System.out.println("Victorias del Algoritmo Grover: " + groverWins);
@@ -109,6 +108,46 @@ public class HiloExperimento extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(HiloExperimento.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public VentanaExperimento getVentanaE() {
+        return ventanaE;
+    }
+
+    public void setVentanaE(VentanaExperimento ventanaE) {
+        this.ventanaE = ventanaE;
+    }
+
+    public boolean isTerminarHilo() {
+        return terminarHilo;
+    }
+
+    public void setTerminarHilo(boolean terminarHilo) {
+        this.terminarHilo = terminarHilo;
+    }
+
+    public int getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
+    }
+
+    public int getN() {
+        return N;
+    }
+
+    public void setN(int N) {
+        this.N = N;
+    }
+
+    public int getIteraciones() {
+        return iteraciones;
+    }
+
+    public void setIteraciones(int iteraciones) {
+        this.iteraciones = iteraciones;
     }
 
 }
