@@ -20,14 +20,14 @@ import javax.swing.JFrame;
  */
 public class VentanaExperimento extends JFrame implements WindowListener {
 
-    public int operacionGrover;
-    public int operacionGrasp;
-    public double valorGrover=-1;
-    public double valorGrasp=-1;
-    public boolean dibujarMayorMenor=false;
-    public boolean iniciarExperimento=false;
-    public HiloExperimento hiloE;
-    public DecimalFormat df;
+    private int operacionGrover;
+    private int operacionGrasp;
+    private double valorGrover=-1;
+    private double valorGrasp=-1;
+    private boolean dibujarMayorMenor=false;
+    private boolean iniciarExperimento=false;
+    private HiloExperimento hiloE;
+    private DecimalFormat df;
 
     public VentanaExperimento(int velocidad,int N,int iteraciones){
         this.setTitle("Quantum4G");
@@ -35,7 +35,7 @@ public class VentanaExperimento extends JFrame implements WindowListener {
         this.setBounds(20, 20, 800, 450);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setBackground(Color.white);
-        this.setVisible(true);
+        this.setVisible(true);     
         hiloE=new HiloExperimento(this,velocidad,N,iteraciones);
         hiloE.start();
         df = new DecimalFormat("####.000");
@@ -44,32 +44,33 @@ public class VentanaExperimento extends JFrame implements WindowListener {
     @Override
     public void paint(Graphics g){
         super.paint(g);
-        if (iniciarExperimento){
+        if (isIniciarExperimento()){
             g.drawString("Algoritmo Grover:", 25, 50);
             g.drawString("Algoritmo Grasp:", 25, 100);
-            g.drawString("Victorias Grover = " + operacionGrover, 100,150 );
-            g.drawString("Victorias Grasp = " + operacionGrasp, 400, 150);
+            g.drawString("Victorias Grover = " + getOperacionGrover(), 100,150 );
+            g.drawString("Victorias Grasp = " + getOperacionGrasp(), 400, 150);
             g.setColor(Color.blue);
-            g.drawLine(200, 45, 200+10*operacionGrover,45 );
-            g.setColor(Color.red);
-            g.drawLine(200, 95, 200+10*operacionGrasp,95);
 
-            if (valorGrasp>-1){
-                g.drawString ("Grasp:"+ Math.round(valorGrasp),120, 300);
+            g.fillRect(200, 45,10*getOperacionGrover(),10 );
+            g.setColor(Color.red);
+            g.fillRect(200, 95, 10*getOperacionGrasp(),10);
+
+            if (getValorGrasp()>-1){
+                g.drawString ("Grasp:"+ Math.round(getValorGrasp()),120, 300);
             }
-            if (valorGrover>-1){
-                g.drawString ("Grover:"+ Math.round(valorGrover),440, 300);
+            if (getValorGrover()>-1){
+                g.drawString ("Grover:"+ Math.round(getValorGrover()),440, 300);
             }
-            if (valorGrasp>-1 && valorGrover>-1 && dibujarMayorMenor){
-                if (valorGrasp>valorGrover){
+            if (getValorGrasp()>-1 && getValorGrover()>-1 && isDibujarMayorMenor()){
+                if (getValorGrasp()>getValorGrover()){
                     g.drawString ("ES MAYOR QUE ", 260, 300);
                 }
                 else{
                     g.drawString("ES MENOR QUE",260,300);
                 }
-                valorGrasp=-1;
-                valorGrover=-1;
-                dibujarMayorMenor=false;
+                setValorGrasp(-1);
+                setValorGrover(-1);
+                setDibujarMayorMenor(false);
             }
         }
     }
@@ -87,8 +88,8 @@ public class VentanaExperimento extends JFrame implements WindowListener {
     @Override
     public void windowClosed(WindowEvent e) {
         try {
-            this.hiloE.terminarHilo=true;
-            this.hiloE.join();
+            this.hiloE.setTerminarHilo(true);
+            this.getHiloE().join();
         } catch (InterruptedException ex) {
             Logger.getLogger(VentanaExperimento.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -106,12 +107,76 @@ public class VentanaExperimento extends JFrame implements WindowListener {
 
     @Override
     public void windowActivated(WindowEvent e) {
-    
+        this.repaint();   
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
     
+    }
+
+    public int getOperacionGrover() {
+        return operacionGrover;
+    }
+
+    public void setOperacionGrover(int operacionGrover) {
+        this.operacionGrover = operacionGrover;
+    }
+
+    public int getOperacionGrasp() {
+        return operacionGrasp;
+    }
+
+    public void setOperacionGrasp(int operacionGrasp) {
+        this.operacionGrasp = operacionGrasp;
+    }
+
+    public double getValorGrover() {
+        return valorGrover;
+    }
+
+    public void setValorGrover(double valorGrover) {
+        this.valorGrover = valorGrover;
+    }
+
+    public double getValorGrasp() {
+        return valorGrasp;
+    }
+
+    public void setValorGrasp(double valorGrasp) {
+        this.valorGrasp = valorGrasp;
+    }
+
+    public boolean isDibujarMayorMenor() {
+        return dibujarMayorMenor;
+    }
+
+    public void setDibujarMayorMenor(boolean dibujarMayorMenor) {
+        this.dibujarMayorMenor = dibujarMayorMenor;
+    }
+
+    public boolean isIniciarExperimento() {
+        return iniciarExperimento;
+    }
+
+    public void setIniciarExperimento(boolean iniciarExperimento) {
+        this.iniciarExperimento = iniciarExperimento;
+    }
+
+    public HiloExperimento getHiloE() {
+        return hiloE;
+    }
+
+    public void setHiloE(HiloExperimento hiloE) {
+        this.hiloE = hiloE;
+    }
+
+    public DecimalFormat getDf() {
+        return df;
+    }
+
+    public void setDf(DecimalFormat df) {
+        this.df = df;
     }
     
 }
