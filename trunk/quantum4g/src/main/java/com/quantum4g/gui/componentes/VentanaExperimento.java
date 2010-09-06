@@ -25,14 +25,17 @@ public class VentanaExperimento extends JFrame implements WindowListener {
     private double valorGrasp=-1;
     private boolean dibujarMayorMenor=false;
     private boolean iniciarExperimento=false;
+    private int iteraciones;
     private HiloExperimento hiloE;
+    
     public VentanaExperimento(int velocidad,int N,int iteraciones){
         this.setTitle("Quantum4G");
         this.addWindowListener(this);
-        this.setBounds(20, 20, 800, 450);
+        this.setBounds(20, 20, 600+iteraciones*6, 450);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setBackground(Color.white);
-        this.setVisible(true);     
+        this.setVisible(true);
+        this.iteraciones=iteraciones;
         hiloE=new HiloExperimento(this,velocidad,N,iteraciones);
         hiloE.start();
     }
@@ -45,11 +48,16 @@ public class VentanaExperimento extends JFrame implements WindowListener {
             g.drawString("Algoritmo Grasp:", 25, 100);
             g.drawString("Victorias Grover = " + getOperacionGrover(), 100,150 );
             g.drawString("Victorias Grasp = " + getOperacionGrasp(), 400, 150);
+
+            g.setColor(Color.WHITE);
+            g.fillRect(180, 40, 10*this.iteraciones, 20);
+            g.fillRect(180, 90, 10*this.iteraciones, 20);
+
             g.setColor(Color.blue);
 
-            g.fillRect(200, 45,10*getOperacionGrover(),10 );
+            g.fillRect(180, 45,10*getOperacionGrover(),10 );
             g.setColor(Color.red);
-            g.fillRect(200, 95, 10*getOperacionGrasp(),10);
+            g.fillRect(180, 95, 10*getOperacionGrasp(),10);
 
             if (getValorGrasp()>-1){
                 g.drawString ("Grasp:"+ Math.round(getValorGrasp()),120, 300);
@@ -165,6 +173,14 @@ public class VentanaExperimento extends JFrame implements WindowListener {
 
     public void setHiloE(HiloExperimento hiloE) {
         this.hiloE = hiloE;
+    }
+
+    public int getIteraciones() {
+        return iteraciones;
+    }
+
+    public void setIteraciones(int iteraciones) {
+        this.iteraciones = iteraciones;
     }
 
 }
