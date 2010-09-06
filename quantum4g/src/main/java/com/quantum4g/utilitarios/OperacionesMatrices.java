@@ -17,7 +17,6 @@ public class OperacionesMatrices {
 
     private int totalElementos;    
     private int[][] matrizIdentidad;
-    private final double INVERSA_RAIZ=(1/Math.sqrt(2));
 
     public OperacionesMatrices(int N){
         this.N=N;

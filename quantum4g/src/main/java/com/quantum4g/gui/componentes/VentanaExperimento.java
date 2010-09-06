@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -27,8 +26,6 @@ public class VentanaExperimento extends JFrame implements WindowListener {
     private boolean dibujarMayorMenor=false;
     private boolean iniciarExperimento=false;
     private HiloExperimento hiloE;
-    private DecimalFormat df;
-
     public VentanaExperimento(int velocidad,int N,int iteraciones){
         this.setTitle("Quantum4G");
         this.addWindowListener(this);
@@ -38,7 +35,6 @@ public class VentanaExperimento extends JFrame implements WindowListener {
         this.setVisible(true);     
         hiloE=new HiloExperimento(this,velocidad,N,iteraciones);
         hiloE.start();
-        df = new DecimalFormat("####.000");
     }
     
     @Override
@@ -171,12 +167,4 @@ public class VentanaExperimento extends JFrame implements WindowListener {
         this.hiloE = hiloE;
     }
 
-    public DecimalFormat getDf() {
-        return df;
-    }
-
-    public void setDf(DecimalFormat df) {
-        this.df = df;
-    }
-    
 }
